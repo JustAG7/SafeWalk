@@ -1,0 +1,14 @@
+abstract class AuthRepository {
+  Future<void> signInWithEmail({
+    required String email,
+    required String password,
+  });
+
+  Future<void> signUpWithEmail({
+    required String email,
+    required String password,
+  });
+
+  Future<void> signOut();
+}
+
