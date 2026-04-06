@@ -28,3 +28,8 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Local reference docs
+SafeWalk_Design_Prompts.md
+SafeWalk_Software_Design_Document.docx
+SafeWalk_User_Flow.png
