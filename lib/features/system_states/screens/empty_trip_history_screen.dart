@@ -95,7 +95,7 @@ class EmptyTripHistoryScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () => context.go('/post-trip/trip-summary'),
                           child: const Text('View Sample Reports'),
                         ),
                       ],
@@ -177,3 +177,6 @@ class _BottomBar extends StatelessWidget {
     );
   }
 }
+
+
+

@@ -10,6 +10,26 @@ class PermissionDeniedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showPermissionWhySheet() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Why these permissions matter', style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text('Location keeps route monitoring accurate, while notifications ensure that check-ins and SOS confirmations still reach you when the app is not in front.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
     return PageScaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: SafeArea(
@@ -32,7 +52,7 @@ class PermissionDeniedScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     const _PermissionRow(title: 'Notifications', subtitle: 'Push Alerts'),
                     const SizedBox(height: 18),
-                    Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFFF3F6FB), borderRadius: BorderRadius.circular(22)), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [const CircleAvatar(radius: 18, backgroundColor: Color(0xFFEAF1FD), child: Icon(Icons.info_outline_rounded, color: AppColors.skyBlue)), const SizedBox(width: 12), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Why this matters', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text('Background tracking ensures help reaches you even if you can\'t reach your phone. We only monitor your location during an active trip or if an SOS is triggered.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.4))]))])),
+                    InkWell(onTap: showPermissionWhySheet, borderRadius: BorderRadius.circular(22), child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFFF3F6FB), borderRadius: BorderRadius.circular(22)), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [const CircleAvatar(radius: 18, backgroundColor: Color(0xFFEAF1FD), child: Icon(Icons.info_outline_rounded, color: AppColors.skyBlue)), const SizedBox(width: 12), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Why this matters', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text('Background tracking ensures help reaches you even if you can\'t reach your phone. We only monitor your location during an active trip or if an SOS is triggered.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.4))]))]))),
                     const SizedBox(height: 20),
                     SizedBox(width: double.infinity, height: 54, child: FilledButton(onPressed: () => context.go('/setup/permissions'), child: const Text('Open System Settings'))),
                     const SizedBox(height: 10),

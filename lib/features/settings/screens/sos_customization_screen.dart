@@ -4,8 +4,43 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../shared/widgets/page_scaffold.dart';
 
-class SosCustomizationScreen extends StatelessWidget {
+class SosCustomizationScreen extends StatefulWidget {
   const SosCustomizationScreen({super.key});
+
+  @override
+  State<SosCustomizationScreen> createState() => _SosCustomizationScreenState();
+}
+
+class _SosCustomizationScreenState extends State<SosCustomizationScreen> {
+  String _countdown = '3s';
+  bool _doubleTapVolume = true;
+  bool _tripleTapLock = false;
+  bool _silentAlarm = false;
+  bool _sirenSound = true;
+  bool _flashlightStrobe = true;
+  bool _autoCallGuardian = true;
+  bool _autoSmsCircle = true;
+
+  void _showSavedSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('SOS setup updated', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 8),
+              Text('Countdown: $_countdown. Auto-call guardian is ${_autoCallGuardian ? 'on' : 'off'}, and auto-SMS circle is ${_autoSmsCircle ? 'on' : 'off'}.', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,26 +64,35 @@ class SosCustomizationScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text('ACTIVATION FLOW', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
-                    Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Countdown Timer', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text('Delay before SOS protocol initiates', style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary)), const SizedBox(height: 12), Row(children: const [_TimeChip(text: '3s', active: true), SizedBox(width: 8), _TimeChip(text: '5s'), SizedBox(width: 8), _TimeChip(text: '10s')])])),
+                    Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Countdown Timer', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text('Delay before SOS protocol initiates', style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary)), const SizedBox(height: 12), Row(children: [_TimeChip(text: '3s', active: _countdown == '3s', onTap: () => setState(() => _countdown = '3s')), const SizedBox(width: 8), _TimeChip(text: '5s', active: _countdown == '5s', onTap: () => setState(() => _countdown = '5s')), const SizedBox(width: 8), _TimeChip(text: '10s', active: _countdown == '10s', onTap: () => setState(() => _countdown = '10s'))])])),
                     const SizedBox(height: 12),
-                    const _ToggleTile(title: 'Double-tap Volume', subtitle: 'Triggers even when screen is off', value: true),
+                    _ToggleTile(title: 'Double-tap Volume', subtitle: 'Triggers even when screen is off', value: _doubleTapVolume, onChanged: (value) => setState(() => _doubleTapVolume = value)),
                     const SizedBox(height: 12),
-                    const _ToggleTile(title: 'Triple-tap Lock', subtitle: 'Discreet mechanical trigger', value: false),
+                    _ToggleTile(title: 'Triple-tap Lock', subtitle: 'Discreet mechanical trigger', value: _tripleTapLock, onChanged: (value) => setState(() => _tripleTapLock = value)),
                     const SizedBox(height: 18),
                     Text('ALERT BEHAVIOR', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
-                    const _ToggleTile(title: 'Silent Alarm', subtitle: 'No visual or audio cues on device', value: false),
+                    _ToggleTile(title: 'Silent Alarm', subtitle: 'No visual or audio cues on device', value: _silentAlarm, onChanged: (value) => setState(() => _silentAlarm = value)),
                     const SizedBox(height: 12),
-                    const _ToggleTile(title: 'Siren Sound', subtitle: 'Max-volume high-frequency deterrent', value: true),
+                    _ToggleTile(title: 'Siren Sound', subtitle: 'Max-volume high-frequency deterrent', value: _sirenSound, onChanged: (value) => setState(() => _sirenSound = value)),
                     const SizedBox(height: 12),
-                    const _ToggleTile(title: 'Flashlight Strobe', subtitle: 'Pulsing light to attract attention', value: true),
+                    _ToggleTile(title: 'Flashlight Strobe', subtitle: 'Pulsing light to attract attention', value: _flashlightStrobe, onChanged: (value) => setState(() => _flashlightStrobe = value)),
                     const SizedBox(height: 18),
                     Text('AUTOMATED NETWORKING', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(color: AppColors.trustNavy, borderRadius: BorderRadius.circular(24)),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [CircleAvatar(radius: 18, backgroundColor: Colors.white.withOpacity(0.1), child: const Icon(Icons.call_outlined, color: Colors.white, size: 18)), const SizedBox(width: 10), Expanded(child: Text('Auto-call Primary Guardian', style: theme.textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w700))), Switch(value: true, onChanged: (_) {})]), const SizedBox(height: 6), Text('Initiates a hands-free call to Alex Guardian', style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70)), const SizedBox(height: 14), Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(18)), child: Row(children: [const Icon(Icons.location_on_outlined, color: AppColors.skyBlue), const SizedBox(width: 10), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Auto-SMS Circle', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text('Live location sent to "Night Owl" circle', style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary))])), Switch(value: true, onChanged: (_) {})]))]),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [CircleAvatar(radius: 18, backgroundColor: Colors.white.withOpacity(0.1), child: const Icon(Icons.call_outlined, color: Colors.white, size: 18)), const SizedBox(width: 10), Expanded(child: Text('Auto-call Primary Guardian', style: theme.textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w700))), Switch(value: _autoCallGuardian, onChanged: (value) => setState(() => _autoCallGuardian = value))]), const SizedBox(height: 6), Text('Initiates a hands-free call to Alex Guardian', style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70)), const SizedBox(height: 14), Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(18)), child: Row(children: [const Icon(Icons.location_on_outlined, color: AppColors.skyBlue), const SizedBox(width: 10), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Auto-SMS Circle', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text('Live location sent to "Night Owl" circle', style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary))])), Switch(value: _autoSmsCircle, onChanged: (value) => setState(() => _autoSmsCircle = value))]))]),
+                    ),
+                    const SizedBox(height: 18),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 54,
+                      child: FilledButton(
+                        onPressed: _showSavedSheet,
+                        child: const Text('Save SOS Preferences'),
+                      ),
                     ),
                   ],
                 ),
@@ -63,20 +107,22 @@ class SosCustomizationScreen extends StatelessWidget {
 }
 
 class _TimeChip extends StatelessWidget {
-  const _TimeChip({required this.text, this.active = false});
+  const _TimeChip({required this.text, this.active = false, this.onTap});
   final String text;
   final bool active;
+  final VoidCallback? onTap;
   @override
-  Widget build(BuildContext context) => Container(padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10), decoration: BoxDecoration(color: active ? AppColors.trustNavy : const Color(0xFFF3F6FB), borderRadius: BorderRadius.circular(14)), child: Text(text, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: active ? Colors.white : AppColors.trustNavy, fontWeight: FontWeight.w700)));
+  Widget build(BuildContext context) => InkWell(onTap: onTap, borderRadius: BorderRadius.circular(14), child: Container(padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10), decoration: BoxDecoration(color: active ? AppColors.trustNavy : const Color(0xFFF3F6FB), borderRadius: BorderRadius.circular(14)), child: Text(text, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: active ? Colors.white : AppColors.trustNavy, fontWeight: FontWeight.w700))));
 }
 
 class _ToggleTile extends StatelessWidget {
-  const _ToggleTile({required this.title, required this.subtitle, required this.value});
+  const _ToggleTile({required this.title, required this.subtitle, required this.value, required this.onChanged});
   final String title;
   final String subtitle;
   final bool value;
+  final ValueChanged<bool> onChanged;
   @override
-  Widget build(BuildContext context) => Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text(subtitle, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.35))])), Switch(value: value, onChanged: (_) {})]));
+  Widget build(BuildContext context) => Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text(subtitle, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.35))])), Switch(value: value, onChanged: onChanged)]));
 }
 
 class _SettingsBottomBar extends StatelessWidget {

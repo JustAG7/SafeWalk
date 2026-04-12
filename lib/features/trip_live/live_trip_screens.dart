@@ -1,3 +1,4 @@
+﻿import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,6 +11,54 @@ class ActiveTripMainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showGuardianCoverageSheet() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Guardian coverage', style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text('Sarah, Marcus, and Lina are assigned to your live walk. Two nearby community guardians are also available for escalation if conditions change.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    void showTripStatusSheet() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Safe path selected', style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text('Guardian Active is monitoring 3 watchers, encrypted trip telemetry, and route visibility in real time.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+                const SizedBox(height: 18),
+                const Row(
+                  children: [
+                    Expanded(child: _MetricTile(title: 'WATCHERS', value: '3')),
+                    SizedBox(width: 12),
+                    Expanded(child: _MetricTile(title: 'ROUTE SCORE', value: '98%')),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return PageScaffold(
       safeArea: false,
@@ -42,20 +91,27 @@ class ActiveTripMainScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(color: Colors.white.withOpacity(0.92), borderRadius: BorderRadius.circular(26)),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(radius: 6, backgroundColor: Color(0xFF4BE090)),
-                        const SizedBox(width: 10),
-                        Expanded(child: Text('Safe Path\nSelected', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy))),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                          decoration: BoxDecoration(color: const Color(0xFFEAF1FD), borderRadius: BorderRadius.circular(999)),
-                          child: Text('Encrypted', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700)),
+                  child: Material(
+                    color: Colors.white.withOpacity(0.92),
+                    borderRadius: BorderRadius.circular(26),
+                    child: InkWell(
+                      onTap: showTripStatusSheet,
+                      borderRadius: BorderRadius.circular(26),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(radius: 6, backgroundColor: Color(0xFF4BE090)),
+                            const SizedBox(width: 10),
+                            Expanded(child: Text('Safe Path\nSelected', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy))),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                              decoration: BoxDecoration(color: const Color(0xFFEAF1FD), borderRadius: BorderRadius.circular(999)),
+                              child: Text('Encrypted', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700)),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -73,7 +129,7 @@ class ActiveTripMainScreen extends StatelessWidget {
                             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('ESTIMATED ARRIVAL', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)), const SizedBox(height: 8), Text('10:42\nPM', style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy, height: 0.95))])),
                             Text('-12\nmins', textAlign: TextAlign.right, style: theme.textTheme.titleLarge?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700, height: 1.0)),
                             const SizedBox(width: 12),
-                            const _MiniAvatarStack(),
+                            _MiniAvatarStack(onTap: showGuardianCoverageSheet),
                           ],
                         ),
                         const SizedBox(height: 18),
@@ -98,7 +154,7 @@ class ActiveTripMainScreen extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(top: 160, right: 18, child: Container(width: 42, height: 42, decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle), child: IconButton(onPressed: () {}, icon: const Icon(Icons.open_in_full_rounded, size: 18, color: AppColors.trustNavy)))),
+          Positioned(top: 160, right: 18, child: Container(width: 42, height: 42, decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle), child: IconButton(onPressed: () => context.go('/trip-live/navigation'), icon: const Icon(Icons.open_in_full_rounded, size: 18, color: AppColors.trustNavy)))),
         ],
       ),
     );
@@ -111,6 +167,43 @@ class LiveNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showNavigationMetric(String title, String detail) {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text(detail, style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    Future<void> confirmEndTrip() async {
+      final shouldEnd = await showDialog<bool>(
+            context: context,
+            builder: (dialogContext) => AlertDialog(
+              title: const Text('End current trip?'),
+              content: const Text('This will stop live monitoring and move you to the arrival confirmation flow.'),
+              actions: [
+                TextButton(onPressed: () => Navigator.of(dialogContext).pop(false), child: const Text('Keep Trip')),
+                FilledButton(onPressed: () => Navigator.of(dialogContext).pop(true), child: const Text('End Trip')),
+              ],
+            ),
+          ) ??
+          false;
+      if (shouldEnd && context.mounted) {
+        context.go('/post-trip/arrival-success');
+      }
+    }
 
     return PageScaffold(
       safeArea: false,
@@ -142,21 +235,44 @@ class LiveNavigationScreen extends StatelessWidget {
                 const Spacer(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.end, children: const [
-                    _MiniStatusCard(label: 'BRIGHTNESS', value: '98%'),
-                    SizedBox(width: 10),
-                    _MiniStatusCard(label: 'CONTACTS', value: '3'),
-                  ]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      _MiniStatusCard(
+                        label: 'BRIGHTNESS',
+                        value: '98%',
+                        onTap: () => showNavigationMetric('Brightness', 'Street and storefront lighting remain above your preferred comfort threshold.'),
+                      ),
+                      const SizedBox(width: 10),
+                      _MiniStatusCard(
+                        label: 'CONTACTS',
+                        value: '3',
+                        onTap: () => showNavigationMetric('Guardian contacts', 'Three guardians are actively eligible to receive route updates from this live trip.'),
+                      ),
+                    ],
+                  ),
                 ),
                 const Spacer(),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 18),
-                  child: Row(children: [Expanded(child: OutlinedButton.icon(onPressed: () => context.go('/trip-live/need-help'), icon: const Icon(Icons.sos_outlined), label: const Text('SOS'))), const SizedBox(width: 12), Expanded(flex: 2, child: FilledButton.icon(onPressed: () => context.go('/post-trip/arrival-success'), icon: const Icon(Icons.close_rounded), label: const Text('End Trip')))]),
+                  child: Row(children: [Expanded(child: OutlinedButton.icon(onPressed: () => context.go('/trip-live/need-help'), icon: const Icon(Icons.sos_outlined), label: const Text('SOS'))), const SizedBox(width: 12), Expanded(flex: 2, child: FilledButton.icon(onPressed: confirmEndTrip, icon: const Icon(Icons.close_rounded), label: const Text('End Trip')))]),
                 ),
               ],
             ),
           ),
-          Positioned(left: 100, bottom: 92, child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: const Color(0xFFD6F3E4), borderRadius: BorderRadius.circular(999)), child: const Text('Sentinel Active', style: TextStyle(color: AppColors.safeGreen, fontWeight: FontWeight.w700, fontSize: 11)))),
+          Positioned(
+            left: 100,
+            bottom: 92,
+            child: InkWell(
+              onTap: () => showNavigationMetric('Sentinel status', 'Guardian Active is still matching route progress against lighting, community density, and emergency coverage.'),
+              borderRadius: BorderRadius.circular(999),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(color: const Color(0xFFD6F3E4), borderRadius: BorderRadius.circular(999)),
+                child: const Text('Sentinel Active', style: TextStyle(color: AppColors.safeGreen, fontWeight: FontWeight.w700, fontSize: 11)),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -168,6 +284,43 @@ class LiveContactTrackingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showFeedback(String message) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(message)));
+    }
+    void showWatcherSummary() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Watcher summary',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: AppColors.trustNavy,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Sarah and Dad are following your live route. Marcus is currently offline, so he will receive the next summary update instead of live pings.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return PageScaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -192,13 +345,28 @@ class LiveContactTrackingScreen extends StatelessWidget {
                     ]),
                   ),
                   const SizedBox(height: 16),
-                  Row(children: [Text('Watching Live', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy)), const Spacer(), Text('2 Active', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700))]),
+                  Row(
+                    children: [
+                      Text(
+                        'Watching Live',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.trustNavy,
+                        ),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: showWatcherSummary,
+                        child: const Text('2 Active'),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 12),
                   _WatcherTile(name: 'Sarah Williams', subtitle: 'Watching since 8:12 PM', icon: Icons.chat_bubble_outline_rounded, onTap: () => context.go('/companion/chat-voice-assist')),
                   const SizedBox(height: 10),
                   _WatcherTile(name: 'Dad', subtitle: 'Watching since 8:15 PM', icon: Icons.call_outlined, onTap: () => context.go('/companion/main')),
                   const SizedBox(height: 10),
-                  const _WatcherTile(name: 'Marcus', subtitle: 'Offline', icon: Icons.notifications_none_rounded),
+                  _WatcherTile(name: 'Marcus', subtitle: 'Offline', icon: Icons.notifications_none_rounded, onTap: () => showFeedback('Marcus is currently offline.')),
                 ],
               ),
             ),
@@ -209,8 +377,42 @@ class LiveContactTrackingScreen extends StatelessWidget {
   }
 }
 
-class CheckInPromptScreen extends StatelessWidget {
+class CheckInPromptScreen extends StatefulWidget {
   const CheckInPromptScreen({super.key});
+
+  @override
+  State<CheckInPromptScreen> createState() => _CheckInPromptScreenState();
+}
+
+class _CheckInPromptScreenState extends State<CheckInPromptScreen> {
+  Timer? _timer;
+  int _secondsRemaining = 54;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) return;
+      if (_secondsRemaining <= 1) {
+        timer.cancel();
+        context.go('/trip-live/need-help');
+        return;
+      }
+      setState(() => _secondsRemaining -= 1);
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  String get _timerLabel {
+    final minutes = (_secondsRemaining ~/ 60).toString().padLeft(2, '0');
+    final seconds = (_secondsRemaining % 60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,13 +433,13 @@ class CheckInPromptScreen extends StatelessWidget {
                 const SizedBox(height: 14),
                 Text('Guardian Active is waiting for your confirmation.', textAlign: TextAlign.center, style: theme.textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary, height: 1.45)),
                 const SizedBox(height: 22),
-                Text('00:54', style: theme.textTheme.displayLarge?.copyWith(fontWeight: FontWeight.w800, color: AppColors.trustNavy)),
+                Text(_timerLabel, style: theme.textTheme.displayLarge?.copyWith(fontWeight: FontWeight.w800, color: AppColors.trustNavy)),
                 const SizedBox(height: 4),
                 Text('SECONDS REMAINING', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 18),
-                SizedBox(width: double.infinity, height: 56, child: FilledButton.icon(onPressed: () => context.go('/trip-live/im-fine'), icon: const Icon(Icons.check_circle_outline_rounded), label: const Text('I\'m Fine'))),
+                SizedBox(width: double.infinity, height: 56, child: FilledButton.icon(onPressed: () { _timer?.cancel(); context.go('/trip-live/im-fine'); }, icon: const Icon(Icons.check_circle_outline_rounded), label: const Text('I\'m Fine'))),
                 const SizedBox(height: 14),
-                SizedBox(width: double.infinity, height: 56, child: FilledButton(onPressed: () => context.go('/trip-live/need-help'), style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFDE7E5), foregroundColor: AppColors.emergencyRed), child: const Text('I Need Help'))),
+                SizedBox(width: double.infinity, height: 56, child: FilledButton(onPressed: () { _timer?.cancel(); context.go('/trip-live/need-help'); }, style: FilledButton.styleFrom(backgroundColor: const Color(0xFFFDE7E5), foregroundColor: AppColors.emergencyRed), child: const Text('I Need Help'))),
                 const SizedBox(height: 14),
                 Text('Emergency contacts will be notified automatically if you do not respond.', textAlign: TextAlign.center, style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textMuted, height: 1.45)),
               ],
@@ -255,6 +457,46 @@ class ImFineStateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showTemporaryContactSheet() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Add a temporary contact',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: AppColors.trustNavy,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Use this when someone new is joining your trip for a short time so they can receive the next safety update.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(sheetContext).pop();
+                    context.go('/trip-live/contact-tracking');
+                  },
+                  child: const Text('Open Contact Tracking'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return PageScaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -273,7 +515,7 @@ class ImFineStateScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(26)),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [Expanded(child: Text('Home to Central Park', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy))), const _StatusBadgeLite(text: 'LIVE')]), const SizedBox(height: 10), Text('2 Guardians watching your path', style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary)), const SizedBox(height: 16), const Row(children: [Expanded(child: _MetricTile(title: 'DISTANCE LEFT', value: '1.2 km')), SizedBox(width: 12), Expanded(child: _MetricTile(title: 'ETA', value: '8 min'))]), const SizedBox(height: 14), SizedBox(width: double.infinity, height: 50, child: OutlinedButton.icon(onPressed: () => context.go('/trip-live/contact-tracking'), icon: const Icon(Icons.person_add_alt_1_outlined), label: const Text('Add Temporary Contact')))]),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [Expanded(child: Text('Home to Central Park', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy))), const _StatusBadgeLite(text: 'LIVE')]), const SizedBox(height: 10), Text('2 Guardians watching your path', style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary)), const SizedBox(height: 16), const Row(children: [Expanded(child: _MetricTile(title: 'DISTANCE LEFT', value: '1.2 km')), SizedBox(width: 12), Expanded(child: _MetricTile(title: 'ETA', value: '8 min'))]), const SizedBox(height: 14), SizedBox(width: double.infinity, height: 50, child: OutlinedButton.icon(onPressed: showTemporaryContactSheet, icon: const Icon(Icons.person_add_alt_1_outlined), label: const Text('Add Temporary Contact')))]),
             ),
           ],
         ),
@@ -288,6 +530,38 @@ class NeedHelpFlowScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showLocationStatus() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Location sharing active',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: AppColors.trustNavy,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Your live position is already being shared with the emergency flow. You can now call 911, alert guardians, or route yourself to a nearby safe point.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return PageScaffold(
       safeArea: false,
@@ -309,13 +583,17 @@ class NeedHelpFlowScreen extends StatelessWidget {
                   const SizedBox(height: 18),
                   Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(color: Colors.white.withOpacity(0.12), borderRadius: BorderRadius.circular(999)), child: Text('Action Required', style: theme.textTheme.labelSmall?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700))),
                   const Spacer(),
-                  _EmergencyActionTile(color: AppColors.emergencyRed, icon: Icons.emergency, title: 'Call 911', subtitle: 'Emergency Services', onTap: () => context.go('/trip-live/sos-expanded')),
+                  _EmergencyActionTile(color: AppColors.emergencyRed, icon: Icons.emergency, title: 'Call 911', subtitle: 'Emergency Services', onTap: () => context.go('/emergency/hotline')),
                   const SizedBox(height: 12),
                   _EmergencyActionTile(color: const Color(0xFFEAF1FD), icon: Icons.group_outlined, title: 'Alert Guardians', subtitle: 'Guardian Network', darkText: true, onTap: () => context.go('/companion/main')),
                   const SizedBox(height: 12),
                   _EmergencyActionTile(color: const Color(0xFFE8FAF1), icon: Icons.shield_outlined, title: 'Find Safe Point', subtitle: 'Location Security', darkText: true, onTap: () => context.go('/emergency/nearby-safe-points')),
                   const SizedBox(height: 18),
-                  Container(width: double.infinity, padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: const Color(0xFF113355), borderRadius: BorderRadius.circular(18)), child: Text('Location sharing is currently active.', style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFF8BE4C3), fontWeight: FontWeight.w600))),
+                  InkWell(
+                    onTap: showLocationStatus,
+                    borderRadius: BorderRadius.circular(18),
+                    child: Container(width: double.infinity, padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: const Color(0xFF113355), borderRadius: BorderRadius.circular(18)), child: Text('Location sharing is currently active.', style: theme.textTheme.bodyMedium?.copyWith(color: const Color(0xFF8BE4C3), fontWeight: FontWeight.w600))),
+                  ),
                 ],
               ),
             ),
@@ -331,6 +609,71 @@ class TripProgressUpdateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showProgressMapSheet() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Current route snapshot', style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text('You are moving through the protected corridor with stable coverage. The next update will be sent once you cross the next verified block.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+                const SizedBox(height: 16),
+                Container(
+                  height: 140,
+                  decoration: BoxDecoration(color: const Color(0xFFC8D5C0), borderRadius: BorderRadius.circular(24)),
+                  child: CustomPaint(painter: _MiniTrackingPainter(lightMode: true)),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    void showUpdateSheet() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Send contact update', style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text('Choose how you want to update your guardians about this trip.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+                const SizedBox(height: 18),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.message_outlined),
+                  title: const Text('Quick status message'),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    context.go('/trip-live/contact-tracking');
+                  },
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.location_searching_outlined),
+                  title: const Text('Open live contact tracking'),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    context.go('/trip-live/contact-tracking');
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return PageScaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -350,15 +693,35 @@ class TripProgressUpdateScreen extends StatelessWidget {
             const SizedBox(height: 18),
             const Row(children: [Expanded(child: _MetricTile(title: 'Safe Corridor', value: '100%')), SizedBox(width: 12), Expanded(child: _MetricTile(title: 'Community Presence', value: 'High'))]),
             const SizedBox(height: 16),
-            Container(height: 140, decoration: BoxDecoration(color: const Color(0xFFC8D5C0), borderRadius: BorderRadius.circular(24)), child: CustomPaint(painter: _MiniTrackingPainter(lightMode: true))),
+            Material(
+              color: const Color(0xFFC8D5C0),
+              borderRadius: BorderRadius.circular(24),
+              child: InkWell(
+                onTap: showProgressMapSheet,
+                borderRadius: BorderRadius.circular(24),
+                child: SizedBox(
+                  height: 140,
+                  child: CustomPaint(painter: _MiniTrackingPainter(lightMode: true)),
+                ),
+              ),
+            ),
             const SizedBox(height: 18),
-            SizedBox(width: double.infinity, height: 56, child: FilledButton.icon(onPressed: () => context.go('/trip-live/sos-expanded'), icon: const Icon(Icons.sos_outlined), label: const Text('Hold for SOS'))),
+            SizedBox(width: double.infinity, height: 56, child: FilledButton.icon(onPressed: () => context.go('/trip-live/sos-hold'), icon: const Icon(Icons.sos_outlined), label: const Text('Hold for SOS'))),
             const SizedBox(height: 12),
-            SizedBox(width: double.infinity, height: 54, child: OutlinedButton(onPressed: () => context.go('/trip-live/contact-tracking'), child: const Text('Update Contacts'))),
+            SizedBox(width: double.infinity, height: 54, child: OutlinedButton(onPressed: showUpdateSheet, child: const Text('Update Contacts'))),
           ],
         ),
       ),
     );
+  }
+}
+
+class FloatingSosExpandedScreen extends StatelessWidget {
+  const FloatingSosExpandedScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const NeedHelpFlowScreen();
   }
 }
 
@@ -384,17 +747,19 @@ class _TripBottomBar extends StatelessWidget {
 }
 
 class _MiniAvatarStack extends StatelessWidget {
-  const _MiniAvatarStack();
+  const _MiniAvatarStack({this.onTap});
+  final VoidCallback? onTap;
   @override
-  Widget build(BuildContext context) => Row(children: const [CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAF1FD), child: Text('+3', style: TextStyle(fontSize: 10, color: AppColors.skyBlue, fontWeight: FontWeight.w700)))]);
+  Widget build(BuildContext context) => InkWell(onTap: onTap, borderRadius: BorderRadius.circular(999), child: Row(children: const [CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAF1FD), child: Text('+3', style: TextStyle(fontSize: 10, color: AppColors.skyBlue, fontWeight: FontWeight.w700)))]));
 }
 
 class _MiniStatusCard extends StatelessWidget {
-  const _MiniStatusCard({required this.label, required this.value});
+  const _MiniStatusCard({required this.label, required this.value, this.onTap});
   final String label;
   final String value;
+  final VoidCallback? onTap;
   @override
-  Widget build(BuildContext context) => Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10), decoration: BoxDecoration(color: Colors.white.withOpacity(0.9), borderRadius: BorderRadius.circular(16)), child: Column(children: [Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text(value, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700))]));
+  Widget build(BuildContext context) => Material(color: Colors.white.withOpacity(0.9), borderRadius: BorderRadius.circular(16), child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(16), child: Padding(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10), child: Column(children: [Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text(value, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700))]))));
 }
 
 class _WatcherTile extends StatelessWidget {
@@ -483,8 +848,24 @@ class _MiniTrackingPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-class SosHoldActivationScreen extends StatelessWidget {
+class SosHoldActivationScreen extends StatefulWidget {
   const SosHoldActivationScreen({super.key});
+
+  @override
+  State<SosHoldActivationScreen> createState() => _SosHoldActivationScreenState();
+}
+
+class _SosHoldActivationScreenState extends State<SosHoldActivationScreen> {
+  bool _arming = false;
+
+  void _startCountdown() {
+    if (_arming) return;
+    setState(() => _arming = true);
+    Future<void>.delayed(const Duration(milliseconds: 450), () {
+      if (!mounted) return;
+      context.go('/trip-live/sos-countdown');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -515,11 +896,19 @@ class SosHoldActivationScreen extends StatelessWidget {
                   const Spacer(),
                   Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: AppColors.emergencyRed.withOpacity(0.18), borderRadius: BorderRadius.circular(999)), child: Text('Live Location Broadcasting', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.emergencyRed, fontWeight: FontWeight.w700))),
                   const SizedBox(height: 24),
-                  Container(
-                    width: 208,
-                    height: 208,
-                    decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: AppColors.emergencyRed, width: 4), color: const Color(0x66191F2A)),
-                    child: Center(child: Text('*\nSOS', textAlign: TextAlign.center, style: theme.textTheme.headlineLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w800, height: 1.0))),
+                  Material(
+                    color: Colors.transparent,
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      onTap: _startCountdown,
+                      customBorder: const CircleBorder(),
+                      child: Ink(
+                        width: 208,
+                        height: 208,
+                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: AppColors.emergencyRed, width: 4), color: const Color(0x66191F2A)),
+                        child: Center(child: Text(_arming ? '...\\nSOS' : '*\nSOS', textAlign: TextAlign.center, style: theme.textTheme.headlineLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w800, height: 1.0))),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 24),
                   Text('Hold for SOS', style: theme.textTheme.headlineSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
@@ -544,8 +933,36 @@ class SosHoldActivationScreen extends StatelessWidget {
   }
 }
 
-class SosCountdownScreen extends StatelessWidget {
+class SosCountdownScreen extends StatefulWidget {
   const SosCountdownScreen({super.key});
+
+  @override
+  State<SosCountdownScreen> createState() => _SosCountdownScreenState();
+}
+
+class _SosCountdownScreenState extends State<SosCountdownScreen> {
+  Timer? _timer;
+  int _countdown = 2;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) return;
+      if (_countdown <= 1) {
+        timer.cancel();
+        context.go('/emergency/alert-sent');
+        return;
+      }
+      setState(() => _countdown -= 1);
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -576,7 +993,23 @@ class SosCountdownScreen extends StatelessWidget {
                     const Spacer(),
                     Text('Alerting in...', style: theme.textTheme.labelLarge?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 16),
-                    Container(width: 210, height: 210, decoration: const BoxDecoration(shape: BoxShape.circle, gradient: RadialGradient(colors: [Color(0xFFFFEFEF), Color(0xFFFFFFFF)]), boxShadow: [BoxShadow(color: Color(0x33FF3B30), blurRadius: 24, offset: Offset(0, 12))]), child: Center(child: Text('2', style: theme.textTheme.displayLarge?.copyWith(color: AppColors.emergencyRed, fontWeight: FontWeight.w800)))),
+                    Material(
+                      color: Colors.transparent,
+                      shape: const CircleBorder(),
+                      child: InkWell(
+                        onTap: () {
+                          _timer?.cancel();
+                          context.go('/emergency/alert-sent');
+                        },
+                        customBorder: const CircleBorder(),
+                        child: Ink(
+                          width: 210,
+                          height: 210,
+                          decoration: const BoxDecoration(shape: BoxShape.circle, gradient: RadialGradient(colors: [Color(0xFFFFEFEF), Color(0xFFFFFFFF)]), boxShadow: [BoxShadow(color: Color(0x33FF3B30), blurRadius: 24, offset: Offset(0, 12))]),
+                          child: Center(child: Text('$_countdown', style: theme.textTheme.displayLarge?.copyWith(color: AppColors.emergencyRed, fontWeight: FontWeight.w800))),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 18),
                     Text('Release to cancel. Hold to confirm emergency.', textAlign: TextAlign.center, style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
                     const Spacer(),
@@ -587,7 +1020,7 @@ class SosCountdownScreen extends StatelessWidget {
                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const _EmergencyMeta(icon: Icons.shield_outlined, label: 'Local Authorities'), const _EmergencyMeta(icon: Icons.people_outline, label: '3 Guardians')]),
                     ),
                     const SizedBox(height: 12),
-                    Row(children: [Expanded(child: FilledButton(onPressed: () => context.go('/emergency/priority-contact-auto-call'), style: FilledButton.styleFrom(backgroundColor: const Color(0xFF111A2B), foregroundColor: Colors.white), child: const Text('Contact Police'))), const SizedBox(width: 12), Expanded(child: FilledButton(onPressed: () => context.go('/emergency/alert-sent'), style: FilledButton.styleFrom(backgroundColor: AppColors.emergencyRed), child: const Text('Cancel SOS')))]),
+                    Row(children: [Expanded(child: FilledButton(onPressed: () { _timer?.cancel(); context.go('/emergency/priority-contact-auto-call'); }, style: FilledButton.styleFrom(backgroundColor: const Color(0xFF111A2B), foregroundColor: Colors.white), child: const Text('Contact Police'))), const SizedBox(width: 12), Expanded(child: FilledButton(onPressed: () { _timer?.cancel(); context.go('/trip-live'); }, style: FilledButton.styleFrom(backgroundColor: AppColors.emergencyRed), child: const Text('Cancel SOS')))]),
                   ],
                 ),
               ),
@@ -606,3 +1039,6 @@ class _EmergencyMeta extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(children: [Icon(icon, color: Colors.white70, size: 18), const SizedBox(width: 8), Text(label, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700))]);
 }
+
+
+

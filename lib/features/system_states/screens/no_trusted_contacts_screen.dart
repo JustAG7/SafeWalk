@@ -10,6 +10,26 @@ class NoTrustedContactsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showWhyItMatters() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Why guardians matter', style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text('Trusted contacts receive your trip status, check-in prompts, and SOS escalation updates. Adding even one contact makes your safety flow much stronger.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return PageScaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -38,7 +58,10 @@ class NoTrustedContactsScreen extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  const Icon(Icons.help_outline_rounded, color: AppColors.textMuted),
+                  IconButton(
+                    onPressed: showWhyItMatters,
+                    icon: const Icon(Icons.help_outline_rounded, color: AppColors.textMuted),
+                  ),
                 ],
               ),
               const SizedBox(height: 24),

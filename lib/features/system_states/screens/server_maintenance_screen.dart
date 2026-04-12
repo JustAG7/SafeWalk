@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -30,7 +30,7 @@ class ServerMaintenanceScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Container(padding: const EdgeInsets.all(18), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('ESTIMATED RETURN', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)), const SizedBox(height: 10), RichText(text: TextSpan(style: theme.textTheme.headlineLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w800), children: const [TextSpan(text: '14'), TextSpan(text: ' MIN', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700))])), const SizedBox(height: 12), const LinearProgressIndicator(value: 0.72, minHeight: 8), const SizedBox(height: 18), Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: const Color(0xFFF5F8FC), borderRadius: BorderRadius.circular(18)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Manual Guardian Line', style: theme.textTheme.labelMedium?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)), const SizedBox(height: 10), const _SupportRow(title: 'National SOS', value: '911'), const SizedBox(height: 10), const _SupportRow(title: 'SafeWalk Help', value: '1-800-SAFE-WLK')]))])),
                     const SizedBox(height: 14),
-                    Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFFF3F6FB), borderRadius: BorderRadius.circular(22)), child: Row(children: [Expanded(child: Text('v4.2.0 Deploying\nNeural engine optimizations in progress...', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.4))), OutlinedButton(onPressed: () {}, child: const Text('View Logs'))])),
+                    Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFFF3F6FB), borderRadius: BorderRadius.circular(22)), child: Row(children: [Expanded(child: Text('v4.2.0 Deploying\nNeural engine optimizations in progress...', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.4))), OutlinedButton(onPressed: () { showModalBottomSheet<void>(context: context, builder: (context) => SafeArea(child: Padding(padding: const EdgeInsets.fromLTRB(20, 12, 20, 24), child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Deployment Logs', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 12), Text('12:41 - Edge nodes draining\n12:43 - Guardian AI patch rolling out\n12:46 - Notification workers restarting', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.5))])))); }, child: const Text('View Logs'))])),
                   ],
                 ),
               ),
@@ -49,3 +49,4 @@ class _SupportRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(children: [CircleAvatar(radius: 16, backgroundColor: const Color(0xFFEAF1FD), child: Icon(title.contains('National') ? Icons.local_police_outlined : Icons.support_agent_outlined, size: 16, color: AppColors.skyBlue)), const SizedBox(width: 10), Expanded(child: Text(title, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w600))), Text(value, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700))]);
 }
+

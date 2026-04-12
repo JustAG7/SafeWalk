@@ -10,6 +10,31 @@ class SettingsDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showPlanSheet() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Premium Guardian', style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text('Your current plan includes guardian route scoring, live companion tools, and enhanced SOS escalation options.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    void showSupportFeedback(String label) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text('$label will open in a future update.')));
+    }
 
     return PageScaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -46,11 +71,15 @@ class SettingsDashboardScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 14),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(color: AppColors.trustNavy, borderRadius: BorderRadius.circular(18)),
-                            child: Row(children: [const CircleAvatar(radius: 16, backgroundColor: Color(0x1AFFFFFF), child: Icon(Icons.workspace_premium_outlined, color: Colors.white, size: 18)), const SizedBox(width: 10), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Current Plan', style: theme.textTheme.labelSmall?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text('Premium Guardian', style: theme.textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w700))]))]),
+                          InkWell(
+                            onTap: showPlanSheet,
+                            borderRadius: BorderRadius.circular(18),
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(color: AppColors.trustNavy, borderRadius: BorderRadius.circular(18)),
+                              child: Row(children: [const CircleAvatar(radius: 16, backgroundColor: Color(0x1AFFFFFF), child: Icon(Icons.workspace_premium_outlined, color: Colors.white, size: 18)), const SizedBox(width: 10), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Current Plan', style: theme.textTheme.labelSmall?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text('Premium Guardian', style: theme.textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w700))]))]),
+                            ),
                           ),
                         ],
                       ),
@@ -85,10 +114,10 @@ class SettingsDashboardScreen extends StatelessWidget {
                     const SizedBox(height: 14),
                     _SectionCard(
                       title: 'Support',
-                      items: const [
-                        _SettingsItem(icon: Icons.help_outline_rounded, label: 'Help Center'),
-                        _SettingsItem(icon: Icons.bug_report_outlined, label: 'Report a Bug'),
-                        _SettingsItem(icon: Icons.info_outline_rounded, label: 'About SafeWalk'),
+                      items: [
+                        _SettingsItem(icon: Icons.help_outline_rounded, label: 'Help Center', onTap: () => showSupportFeedback('Help Center')),
+                        _SettingsItem(icon: Icons.bug_report_outlined, label: 'Report a Bug', onTap: () => showSupportFeedback('Report a Bug')),
+                        _SettingsItem(icon: Icons.info_outline_rounded, label: 'About SafeWalk', onTap: () => showSupportFeedback('About SafeWalk')),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -136,11 +165,12 @@ class _SectionCard extends StatelessWidget {
 }
 
 class _SettingsItem {
-  const _SettingsItem({required this.icon, required this.label, this.route});
+  const _SettingsItem({required this.icon, required this.label, this.route, this.onTap});
 
   final IconData icon;
   final String label;
   final String? route;
+  final VoidCallback? onTap;
 }
 
 class _SettingsRow extends StatelessWidget {
@@ -151,7 +181,7 @@ class _SettingsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: item.route == null ? null : () => context.go(item.route!),
+      onTap: item.route != null ? () => context.go(item.route!) : item.onTap,
       child: Row(
         children: [
           CircleAvatar(radius: 18, backgroundColor: const Color(0xFFEAF1FD), child: Icon(item.icon, size: 18, color: AppColors.skyBlue)),

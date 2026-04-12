@@ -2,12 +2,84 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_radius.dart';
-import '../../../core/constants/app_spacing.dart';
 import '../../../shared/widgets/page_scaffold.dart';
 
-class EditTrustedContactScreen extends StatelessWidget {
+class EditTrustedContactScreen extends StatefulWidget {
   const EditTrustedContactScreen({super.key});
+
+  @override
+  State<EditTrustedContactScreen> createState() => _EditTrustedContactScreenState();
+}
+
+class _EditTrustedContactScreenState extends State<EditTrustedContactScreen> {
+  bool _notifyOnTripStart = true;
+  bool _notifyOnArrival = true;
+  bool _priority = true;
+
+  void _save() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Trusted contact preferences updated.')),
+    );
+    context.go('/setup/contacts');
+  }
+
+  Future<void> _removeContact() async {
+    final shouldRemove = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Remove Sarah Miller?'),
+        content: const Text(
+          'She will stop receiving trip updates and emergency alerts in this safety flow.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Keep contact'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldRemove == true && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Contact removed from the setup flow.')),
+      );
+      context.go('/setup/contacts');
+    }
+  }
+
+  void _showAvatarSheet() {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Contact image',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.trustNavy,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'This keeps the current portrait for now. In a future update this is where you would update the contact photo.',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +104,14 @@ class EditTrustedContactScreen extends StatelessWidget {
                       ),
                       Text(
                         'Edit Contact',
-                        style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy),
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.trustNavy,
+                        ),
                       ),
                       const Spacer(),
                       TextButton(
-                        onPressed: () => context.go('/setup/contacts'),
+                        onPressed: _save,
                         child: const Text('SAVE'),
                       ),
                     ],
@@ -53,7 +128,9 @@ class EditTrustedContactScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(color: AppColors.skyBlue, width: 3),
                             image: const DecorationImage(
-                              image: NetworkImage('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80'),
+                              image: NetworkImage(
+                                'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
+                              ),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -61,14 +138,21 @@ class EditTrustedContactScreen extends StatelessWidget {
                         Positioned(
                           right: 4,
                           bottom: 2,
-                          child: Container(
-                            width: 28,
-                            height: 28,
-                            decoration: const BoxDecoration(
-                              color: AppColors.trustNavy,
-                              shape: BoxShape.circle,
+                          child: GestureDetector(
+                            onTap: _showAvatarSheet,
+                            child: Container(
+                              width: 28,
+                              height: 28,
+                              decoration: const BoxDecoration(
+                                color: AppColors.trustNavy,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.edit_rounded,
+                                size: 16,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: const Icon(Icons.edit_rounded, size: 16, color: Colors.white),
                           ),
                         ),
                       ],
@@ -78,41 +162,62 @@ class EditTrustedContactScreen extends StatelessWidget {
                   Text(
                     'Sarah Miller',
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy),
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.trustNavy,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'TRUSTED GUARDIAN',
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.labelSmall?.copyWith(color: AppColors.textMuted, letterSpacing: 0.8, fontWeight: FontWeight.w700),
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: AppColors.textMuted,
+                      letterSpacing: 0.8,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   const SizedBox(height: 20),
-                  const _PermissionBlock(
+                  _PermissionBlock(
                     title: 'NOTIFICATION PERMISSIONS',
-                    items: [
-                      _ToggleRowData(
+                    children: [
+                      _ToggleRow(
                         title: 'Notify on Trip Start',
                         subtitle: 'Automatic alert when you begin a walk',
-                        isEnabled: true,
+                        value: _notifyOnTripStart,
                         activeColor: AppColors.skyBlue,
+                        onChanged: (value) =>
+                            setState(() => _notifyOnTripStart = value),
                       ),
-                      _ToggleRowData(
+                      const SizedBox(height: 18),
+                      _ToggleRow(
                         title: 'Notify on Arrival',
                         subtitle: 'Send confirmation once you reach destination',
-                        isEnabled: true,
+                        value: _notifyOnArrival,
                         activeColor: AppColors.skyBlue,
+                        onChanged: (value) =>
+                            setState(() => _notifyOnArrival = value),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const _PriorityBlock(),
+                  _PriorityBlock(
+                    value: _priority,
+                    onChanged: (value) => setState(() => _priority = value),
+                  ),
                   const SizedBox(height: 22),
                   SizedBox(
                     height: 54,
                     child: OutlinedButton.icon(
-                      onPressed: () => context.go('/setup/contacts'),
-                      icon: const Icon(Icons.person_remove_alt_1_outlined, color: AppColors.emergencyRed),
-                      label: const Text('Remove Contact', style: TextStyle(color: AppColors.emergencyRed)),
+                      onPressed: _removeContact,
+                      icon: const Icon(
+                        Icons.person_remove_alt_1_outlined,
+                        color: AppColors.emergencyRed,
+                      ),
+                      label: const Text(
+                        'Remove Contact',
+                        style: TextStyle(color: AppColors.emergencyRed),
+                      ),
                     ),
                   ),
                 ],
@@ -126,10 +231,10 @@ class EditTrustedContactScreen extends StatelessWidget {
 }
 
 class _PermissionBlock extends StatelessWidget {
-  const _PermissionBlock({required this.title, required this.items});
+  const _PermissionBlock({required this.title, required this.children});
 
   final String title;
-  final List<_ToggleRowData> items;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
@@ -152,10 +257,7 @@ class _PermissionBlock extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 14),
-          for (var i = 0; i < items.length; i++) ...[
-            _ToggleRow(data: items[i]),
-            if (i != items.length - 1) const SizedBox(height: 18),
-          ],
+          ...children,
         ],
       ),
     );
@@ -163,7 +265,10 @@ class _PermissionBlock extends StatelessWidget {
 }
 
 class _PriorityBlock extends StatelessWidget {
-  const _PriorityBlock();
+  const _PriorityBlock({required this.value, required this.onChanged});
+
+  final bool value;
+  final ValueChanged<bool> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -173,36 +278,31 @@ class _PriorityBlock extends StatelessWidget {
         color: const Color(0xFFFFF4F4),
         borderRadius: BorderRadius.circular(24),
       ),
-      child: const _ToggleRow(
-        data: _ToggleRowData(
-          title: 'Emergency Call Priority',
-          subtitle: 'Sarah will be first in SOS rotation',
-          isEnabled: true,
-          activeColor: AppColors.emergencyRed,
-        ),
+      child: _ToggleRow(
+        title: 'Emergency Call Priority',
+        subtitle: 'Sarah will be first in SOS rotation',
+        value: value,
+        activeColor: AppColors.emergencyRed,
+        onChanged: onChanged,
       ),
     );
   }
 }
 
-class _ToggleRowData {
-  const _ToggleRowData({
+class _ToggleRow extends StatelessWidget {
+  const _ToggleRow({
     required this.title,
     required this.subtitle,
-    required this.isEnabled,
+    required this.value,
     required this.activeColor,
+    required this.onChanged,
   });
 
   final String title;
   final String subtitle;
-  final bool isEnabled;
+  final bool value;
   final Color activeColor;
-}
-
-class _ToggleRow extends StatelessWidget {
-  const _ToggleRow({required this.data});
-
-  final _ToggleRowData data;
+  final ValueChanged<bool> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -212,17 +312,28 @@ class _ToggleRow extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(data.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+              Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
               const SizedBox(height: 4),
-              Text(data.subtitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary, height: 1.35)),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.35,
+                    ),
+              ),
             ],
           ),
         ),
         const SizedBox(width: 12),
         Switch(
-          value: data.isEnabled,
-          onChanged: (_) {},
-          activeColor: data.activeColor,
+          value: value,
+          onChanged: onChanged,
+          activeColor: activeColor,
         ),
       ],
     );

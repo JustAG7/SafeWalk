@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -10,6 +10,55 @@ class ArrivalSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    void showActions() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Next steps',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                        color: AppColors.trustNavy,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Choose what to do after this safe arrival.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.45,
+                      ),
+                ),
+                const SizedBox(height: 18),
+                FilledButton.tonal(
+                  onPressed: () {
+                    Navigator.of(sheetContext).pop();
+                    context.go('/post-trip/notify-contacts');
+                  },
+                  child: const Text('Notify Guardians'),
+                ),
+                const SizedBox(height: 10),
+                FilledButton(
+                  onPressed: () {
+                    Navigator.of(sheetContext).pop();
+                    context.go('/post-trip/rate-route-safety');
+                  },
+                  child: const Text('Rate Route'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return PageScaffold(
       backgroundColor: const Color(0xFFF8FAFC),
@@ -100,12 +149,23 @@ class ArrivalSuccessScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CircleAvatar(radius: 12, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 12, color: AppColors.trustNavy)),
+                  const CircleAvatar(
+                    radius: 12,
+                    backgroundColor: Color(0xFFEAD3B8),
+                    child: Icon(Icons.person, size: 12, color: AppColors.trustNavy),
+                  ),
                   const SizedBox(width: 8),
-                  Text(
-                    'Rate your journey',
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: AppColors.textSecondary,
+                  InkWell(
+                    onTap: showActions,
+                    borderRadius: BorderRadius.circular(999),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                      child: Text(
+                        'Post-trip actions',
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
                     ),
                   ),
                 ],

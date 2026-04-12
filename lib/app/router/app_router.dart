@@ -3,27 +3,31 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/companion/companion.dart';
 import '../../features/emergency/emergency.dart';
-import 'package:safewalk/features/entry/login_entry_screen.dart';
-import 'package:safewalk/features/entry/onboarding_screen.dart';
-import 'package:safewalk/features/entry/signup_entry_screen.dart';
-import 'package:safewalk/features/entry/splash_screen.dart';
-import 'package:safewalk/features/entry/welcome_choice_screen.dart';
-import 'package:safewalk/features/planning/screens/planning_placeholders.dart' show MainHomeDashboardScreen, QuickGoHomeActionScreen, RecentDestinationsScreen, SafetyStatusOverviewScreen, SmartCityAlertsFeedScreen, TripsHubScreen;
-import 'package:safewalk/features/planning/screens/route_planning_views.dart';
-import 'package:safewalk/features/setup/screens/add_avatar_screen.dart';
-import 'package:safewalk/features/setup/screens/add_trusted_contact_screen.dart';
-import 'package:safewalk/features/setup/screens/create_profile_screen.dart';
-import 'package:safewalk/features/setup/screens/edit_trusted_contact_screen.dart';
-import 'package:safewalk/features/setup/screens/home_address_setup_screen.dart';
-import 'package:safewalk/features/setup/screens/permission_success_screen.dart';
-import 'package:safewalk/features/setup/screens/permissions_setup_screen.dart';
-import 'package:safewalk/features/setup/screens/school_address_setup_screen.dart';
-import 'package:safewalk/features/setup/screens/setup_completed_screen.dart';
-import 'package:safewalk/features/setup/screens/trusted_contacts_setup_screen.dart';
-import 'package:safewalk/features/setup/screens/work_address_setup_screen.dart';
+import '../../features/entry/login_entry_screen.dart';
+import '../../features/entry/onboarding_screen.dart';
+import '../../features/entry/signup_entry_screen.dart';
+import '../../features/entry/splash_screen.dart';
+import '../../features/entry/welcome_choice_screen.dart';
+import '../../features/planning/screens/planning_overview_screens.dart' show MainHomeDashboardScreen, QuickGoHomeActionScreen, RecentDestinationsScreen, SafetyStatusOverviewScreen, SmartCityAlertsFeedScreen, TripsHubScreen;
+import '../../features/planning/screens/route_planning_screens.dart';
+import '../../features/setup/screens/add_avatar_screen.dart';
+import '../../features/setup/screens/add_trusted_contact_screen.dart';
+import '../../features/setup/screens/create_profile_screen.dart';
+import '../../features/setup/screens/edit_trusted_contact_screen.dart';
+import '../../features/setup/screens/home_address_setup_screen.dart';
+import '../../features/setup/screens/permission_success_screen.dart';
+import '../../features/setup/screens/permissions_setup_screen.dart';
+import '../../features/setup/screens/school_address_setup_screen.dart';
+import '../../features/setup/screens/setup_completed_screen.dart';
+import '../../features/setup/screens/trusted_contacts_list_screen.dart';
+import '../../features/setup/screens/work_address_setup_screen.dart';
 import '../../features/post_trip/post_trip.dart';
 import '../../features/safety_map/safety_map.dart';
-import '../../features/settings/settings.dart';
+import '../../features/settings/accessibility_settings_screen.dart';
+import '../../features/settings/notification_preferences_screen.dart';
+import '../../features/settings/privacy_settings_screen.dart';
+import '../../features/settings/settings_dashboard_screen.dart';
+import '../../features/settings/sos_customization_screen.dart';
 import '../../features/system_states/system_states.dart';
 import '../../features/trip_live/trip_live.dart';
 import '../../shared/navigation/app_navigation_shell.dart';
@@ -435,6 +439,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+
+
 
 
 

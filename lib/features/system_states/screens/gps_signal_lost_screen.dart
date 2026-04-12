@@ -10,6 +10,26 @@ class GpsSignalLostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    void showSignalRecoveryTips() {
+      showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        builder: (sheetContext) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Recovery tips', style: theme.textTheme.titleLarge?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Text('Move toward an open street edge, avoid dense cover, and keep the phone screen active for a few seconds so location can re-center.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
     return PageScaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       body: SafeArea(
@@ -28,7 +48,11 @@ class GpsSignalLostScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text('We\'ve lost your precise location. Try moving to an open area or stay on well-lit streets.', textAlign: TextAlign.center, style: theme.textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary, height: 1.45)),
                     const SizedBox(height: 18),
-                    Container(height: 164, decoration: BoxDecoration(color: const Color(0xFFE1E5EA), borderRadius: BorderRadius.circular(24)), child: const Center(child: CircleAvatar(radius: 18, backgroundColor: Color(0xFFEAF1FD), child: Icon(Icons.place_outlined, color: AppColors.skyBlue)))),
+                    InkWell(
+                      onTap: showSignalRecoveryTips,
+                      borderRadius: BorderRadius.circular(24),
+                      child: Container(height: 164, decoration: BoxDecoration(color: const Color(0xFFE1E5EA), borderRadius: BorderRadius.circular(24)), child: const Center(child: CircleAvatar(radius: 18, backgroundColor: Color(0xFFEAF1FD), child: Icon(Icons.place_outlined, color: AppColors.skyBlue)))),
+                    ),
                     const SizedBox(height: 14),
                     Row(children: [Expanded(child: Text('Current Status\nRe-establishing connection...', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.4))), Text('Signal\nLost', textAlign: TextAlign.right, style: theme.textTheme.titleMedium?.copyWith(color: AppColors.emergencyRed, fontWeight: FontWeight.w700))]),
                     const SizedBox(height: 18),
@@ -36,7 +60,7 @@ class GpsSignalLostScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     SizedBox(width: double.infinity, height: 54, child: FilledButton(onPressed: () => context.go('/trip-live/need-help'), style: FilledButton.styleFrom(backgroundColor: AppColors.emergencyRed), child: const Text('Call Emergency'))),
                     const SizedBox(height: 14),
-                    const Row(children: [Expanded(child: _HintCard(title: 'Stay near light', subtitle: 'Better visibility and potential assistance.')), SizedBox(width: 12), Expanded(child: _HintCard(title: 'Open spaces', subtitle: 'Helps satellite visibility for GPS reset.'))]),
+                    Row(children: [Expanded(child: _HintCard(title: 'Stay near light', subtitle: 'Better visibility and potential assistance.', onTap: showSignalRecoveryTips)), const SizedBox(width: 12), Expanded(child: _HintCard(title: 'Open spaces', subtitle: 'Helps satellite visibility for GPS reset.', onTap: showSignalRecoveryTips))]),
                   ],
                 ),
               ),
@@ -50,11 +74,12 @@ class GpsSignalLostScreen extends StatelessWidget {
 }
 
 class _HintCard extends StatelessWidget {
-  const _HintCard({required this.title, required this.subtitle});
+  const _HintCard({required this.title, required this.subtitle, this.onTap});
   final String title;
   final String subtitle;
+  final VoidCallback? onTap;
   @override
-  Widget build(BuildContext context) => Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: const Color(0xFFF2F5FA), borderRadius: BorderRadius.circular(18)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text(subtitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary, height: 1.35))]));
+  Widget build(BuildContext context) => InkWell(onTap: onTap, borderRadius: BorderRadius.circular(18), child: Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: const Color(0xFFF2F5FA), borderRadius: BorderRadius.circular(18)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text(subtitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary, height: 1.35))])));
 }
 
 class _BottomBar extends StatelessWidget {

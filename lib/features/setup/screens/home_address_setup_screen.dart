@@ -2,12 +2,67 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_radius.dart';
-import '../../../core/constants/app_spacing.dart';
 import '../../../shared/widgets/page_scaffold.dart';
+import '../mock/setup_mock_data.dart';
 
-class HomeAddressSetupScreen extends StatelessWidget {
+class HomeAddressSetupScreen extends StatefulWidget {
   const HomeAddressSetupScreen({super.key});
+
+  @override
+  State<HomeAddressSetupScreen> createState() => _HomeAddressSetupScreenState();
+}
+
+class _HomeAddressSetupScreenState extends State<HomeAddressSetupScreen> {
+  late final TextEditingController _addressController;
+  String _selectedAddress = kSetupSuggestedAddresses.first;
+
+  @override
+  void initState() {
+    super.initState();
+    _addressController = TextEditingController(text: _selectedAddress);
+  }
+
+  @override
+  void dispose() {
+    _addressController.dispose();
+    super.dispose();
+  }
+
+  void _selectAddress(String value) {
+    setState(() {
+      _selectedAddress = value;
+      _addressController.text = value;
+    });
+  }
+
+  void _showLocationDetails() {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Current location locked',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.trustNavy,
+                    ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'High accuracy mode is active, so this address will behave like your live home pin during the app flow.',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +128,17 @@ class HomeAddressSetupScreen extends StatelessWidget {
             top: 330,
             child: Column(
               children: [
-                _MapSideButton(icon: Icons.my_location_rounded),
+                _MapSideButton(
+                  icon: Icons.my_location_rounded,
+                  onTap: _showLocationDetails,
+                ),
                 const SizedBox(height: 10),
-                _MapSideButton(icon: Icons.add_rounded),
+                _MapSideButton(
+                  icon: Icons.add_rounded,
+                  onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Map zoom updated.')),
+                  ),
+                ),
               ],
             ),
           ),
@@ -103,59 +166,97 @@ class HomeAddressSetupScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Container(
-                    height: 54,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEFF3FB),
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(Icons.search_rounded, color: AppColors.textMuted),
-                        SizedBox(width: 10),
-                        Text('221B Baker Street', style: TextStyle(color: AppColors.trustNavy, fontWeight: FontWeight.w600)),
-                      ],
+                  TextField(
+                    controller: _addressController,
+                    onSubmitted: _selectAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Search for your home address',
+                      prefixIcon: const Icon(Icons.search_rounded),
+                      filled: true,
+                      fillColor: const Color(0xFFEFF3FB),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 14),
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 38,
-                          height: 38,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFEAF4FF),
-                            borderRadius: BorderRadius.circular(14),
+                  InkWell(
+                    onTap: _showLocationDetails,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 38,
+                            height: 38,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFEAF4FF),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Icon(
+                              Icons.navigation_rounded,
+                              color: AppColors.skyBlue,
+                              size: 20,
+                            ),
                           ),
-                          child: const Icon(Icons.navigation_rounded, color: AppColors.skyBlue, size: 20),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Current Location', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
-                              const SizedBox(height: 3),
-                              Text('HIGH ACCURACY ACTIVE', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)),
-                            ],
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Current Location',
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  'HIGH ACCURACY ACTIVE',
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: AppColors.textMuted,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppColors.textMuted),
-                      ],
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 16,
+                            color: AppColors.textMuted,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text('SUGGESTED LOCATIONS', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)),
+                  Text(
+                    'SUGGESTED LOCATIONS',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: AppColors.textMuted,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   const SizedBox(height: 10),
-                  Text('1024 Guardian Way, San Francisco', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary)),
-                  const SizedBox(height: 20),
+                  for (final address in kSetupSuggestedAddresses.skip(1)) ...[
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.history_rounded, color: AppColors.textMuted),
+                      title: Text(address),
+                      trailing: _selectedAddress == address
+                          ? const Icon(Icons.check_circle, color: AppColors.safeGreen)
+                          : null,
+                      onTap: () => _selectAddress(address),
+                    ),
+                  ],
+                  const SizedBox(height: 8),
                   SizedBox(
                     height: 54,
                     child: FilledButton(
@@ -167,7 +268,10 @@ class HomeAddressSetupScreen extends StatelessWidget {
                   Text(
                     'This location is used for automatic safety triggers when you reach your destination.',
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary, height: 1.4),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.4,
+                    ),
                   ),
                 ],
               ),
@@ -180,20 +284,28 @@ class HomeAddressSetupScreen extends StatelessWidget {
 }
 
 class _MapSideButton extends StatelessWidget {
-  const _MapSideButton({required this.icon});
+  const _MapSideButton({required this.icon, required this.onTap});
 
   final IconData icon;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 42,
-      height: 42,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(14),
+        child: Ink(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Icon(icon, color: AppColors.trustNavy),
+        ),
       ),
-      child: Icon(icon, color: AppColors.trustNavy),
     );
   }
 }
@@ -226,12 +338,26 @@ class _MapGridPainter extends CustomPainter {
       ..strokeWidth = 1.1;
     for (double x = -20; x < size.width + 20; x += 40) {
       final path = Path()..moveTo(x, 0);
-      path.cubicTo(x + 30, size.height * 0.25, x - 20, size.height * 0.6, x + 18, size.height);
+      path.cubicTo(
+        x + 30,
+        size.height * 0.25,
+        x - 20,
+        size.height * 0.6,
+        x + 18,
+        size.height,
+      );
       canvas.drawPath(path, paint);
     }
     for (double y = 20; y < size.height; y += 54) {
       final path = Path()..moveTo(0, y);
-      path.cubicTo(size.width * 0.3, y - 20, size.width * 0.65, y + 18, size.width, y - 8);
+      path.cubicTo(
+        size.width * 0.3,
+        y - 20,
+        size.width * 0.65,
+        y + 18,
+        size.width,
+        y - 8,
+      );
       canvas.drawPath(path, paint);
     }
   }
