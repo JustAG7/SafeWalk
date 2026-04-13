@@ -82,6 +82,7 @@ class _SafetyMapMainScreenState extends State<SafetyMapMainScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final showStandaloneBottomBar = GoRouterState.of(context).uri.path != '/map';
 
     return PageScaffold(
       safeArea: false,
@@ -178,9 +179,11 @@ class _SafetyMapMainScreenState extends State<SafetyMapMainScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 14),
-                const _MapBottomBar(active: _MapTab.map),
-                const SizedBox(height: 10),
+                if (showStandaloneBottomBar) ...[
+                  const SizedBox(height: 14),
+                  const _MapBottomBar(active: _MapTab.map),
+                  const SizedBox(height: 10),
+                ],
               ],
             ),
           ),
@@ -339,9 +342,9 @@ class _MapBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = const [
       (_MapTab.home, Icons.home_filled, 'HOME', '/home'),
-      (_MapTab.map, Icons.map_outlined, 'MAP', '/safety-map/main'),
+      (_MapTab.map, Icons.map_outlined, 'MAP', '/map'),
       (_MapTab.trips, Icons.route_outlined, 'TRIPS', '/trips'),
-      (_MapTab.settings, Icons.settings_outlined, 'SETTINGS', '/settings/dashboard'),
+      (_MapTab.settings, Icons.settings_outlined, 'SETTINGS', '/settings'),
     ];
 
     return Container(

@@ -10,6 +10,7 @@ class SettingsDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final showStandaloneBottomBar = GoRouterState.of(context).uri.path != '/settings';
     void showPlanSheet() {
       showModalBottomSheet<void>(
         context: context,
@@ -129,7 +130,7 @@ class SettingsDashboardScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const _SettingsBottomBar(active: _SettingsTab.settings),
+              if (showStandaloneBottomBar) const _SettingsBottomBar(active: _SettingsTab.settings),
             ],
           ),
         ),
@@ -205,9 +206,9 @@ class _SettingsBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = const [
       (_SettingsTab.home, Icons.home_filled, 'HOME', '/home'),
-      (_SettingsTab.map, Icons.map_outlined, 'MAP', '/safety-map/main'),
+      (_SettingsTab.map, Icons.map_outlined, 'MAP', '/map'),
       (_SettingsTab.trips, Icons.route_outlined, 'TRIPS', '/trips'),
-      (_SettingsTab.settings, Icons.settings_outlined, 'SETTINGS', '/settings/dashboard'),
+      (_SettingsTab.settings, Icons.settings_outlined, 'SETTINGS', '/settings'),
     ];
     return Container(
       margin: const EdgeInsets.only(top: 8),

@@ -2133,7 +2133,7 @@ class _PlanningBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = const [('HOME', Icons.home_filled, '/home'), ('MAP', Icons.map_outlined, '/planning/recent-destinations'), ('TRIPS', Icons.route_outlined, '/trips'), ('SETTINGS', Icons.settings_outlined, '/settings/dashboard')];
+    final items = const [('HOME', Icons.home_filled, '/home'), ('MAP', Icons.map_outlined, '/map'), ('TRIPS', Icons.route_outlined, '/trips'), ('SETTINGS', Icons.settings_outlined, '/settings')];
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),

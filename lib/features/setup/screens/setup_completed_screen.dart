@@ -192,47 +192,7 @@ class SetupCompletedScreen extends StatelessWidget {
                       ),
                       child: const Text('VIEW SETUP DETAILS'),
                     ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(22),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.shadow.withValues(alpha: 0.06),
-                            blurRadius: 20,
-                            offset: const Offset(0, 12),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _BottomMiniItem(
-                            icon: Icons.home_filled,
-                            label: 'HOME',
-                            active: true,
-                            onTap: () => context.go('/home'),
-                          ),
-                          _BottomMiniItem(
-                            icon: Icons.map_outlined,
-                            label: 'MAP',
-                            onTap: () => context.go('/safety-map/main'),
-                          ),
-                          _BottomMiniItem(
-                            icon: Icons.route_outlined,
-                            label: 'TRIPS',
-                            onTap: () => context.go('/trips'),
-                          ),
-                          _BottomMiniItem(
-                            icon: Icons.settings_outlined,
-                            label: 'SETTINGS',
-                            onTap: () => context.go('/settings/dashboard'),
-                          ),
-                        ],
-                      ),
-                    ),
+                    const SizedBox(height: 8),
                       ],
                     ),
                   ),
@@ -328,57 +288,4 @@ class _SetupReadyCard extends StatelessWidget {
   }
 }
 
-class _BottomMiniItem extends StatelessWidget {
-  const _BottomMiniItem({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-    this.active = false,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-  final bool active;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  color: active ? AppColors.trustNavy : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  icon,
-                  size: 18,
-                  color: active ? Colors.white : AppColors.textMuted,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: active ? AppColors.trustNavy : AppColors.textMuted,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 

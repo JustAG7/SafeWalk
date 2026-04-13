@@ -83,6 +83,13 @@ class ActiveTripMainScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
                   child: Row(
                     children: [
+                      IconButton(
+                        onPressed: () => context.go('/trips'),
+                        icon: const Icon(
+                          Icons.arrow_back_rounded,
+                          color: AppColors.trustNavy,
+                        ),
+                      ),
                       Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
                       const Spacer(),
                       const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy)),
@@ -222,7 +229,7 @@ class LiveNavigationScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
-                  child: Row(children: [Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
+                  child: Row(children: [IconButton(onPressed: () => context.go('/trip-live'), icon: const Icon(Icons.arrow_back_rounded, color: AppColors.trustNavy)), Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 18, 16, 0),
@@ -329,7 +336,7 @@ class LiveContactTrackingScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
-              child: Row(children: [Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
+              child: Row(children: [IconButton(onPressed: () => context.go('/trip-live'), icon: const Icon(Icons.arrow_back_rounded, color: AppColors.trustNavy)), Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
             ),
             Expanded(
               child: ListView(
@@ -504,7 +511,7 @@ class ImFineStateScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
           children: [
-            Row(children: [Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
+            Row(children: [IconButton(onPressed: () => context.go('/trip-live/check-in'), icon: const Icon(Icons.arrow_back_rounded, color: AppColors.trustNavy)), Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(22),
@@ -681,7 +688,7 @@ class TripProgressUpdateScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
           children: [
-            Row(children: [Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
+            Row(children: [IconButton(onPressed: () => context.go('/trip-live'), icon: const Icon(Icons.arrow_back_rounded, color: AppColors.trustNavy)), Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
             const SizedBox(height: 20),
             Text('Trip Active', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.safeGreen, fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
@@ -750,7 +757,50 @@ class _MiniAvatarStack extends StatelessWidget {
   const _MiniAvatarStack({this.onTap});
   final VoidCallback? onTap;
   @override
-  Widget build(BuildContext context) => InkWell(onTap: onTap, borderRadius: BorderRadius.circular(999), child: const Row(children: [CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAF1FD), child: Text('+3', style: TextStyle(fontSize: 10, color: AppColors.skyBlue, fontWeight: FontWeight.w700)))]));
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(999),
+    child: const SizedBox(
+      width: 76,
+      height: 28,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            left: 0,
+            child: CircleAvatar(
+              radius: 14,
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person, size: 14, color: AppColors.textMuted),
+            ),
+          ),
+          Positioned(
+            left: 18,
+            child: CircleAvatar(
+              radius: 14,
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person, size: 14, color: AppColors.textMuted),
+            ),
+          ),
+          Positioned(
+            left: 36,
+            child: CircleAvatar(
+              radius: 14,
+              backgroundColor: Color(0xFFEAF1FD),
+              child: Text(
+                '+3',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: AppColors.skyBlue,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _MiniStatusCard extends StatelessWidget {

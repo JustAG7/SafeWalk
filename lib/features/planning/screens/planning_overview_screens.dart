@@ -149,12 +149,10 @@ class MainHomeDashboardScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 18),
-                const _BottomTabStrip(active: _HomeTab.home),
-                const SizedBox(height: 12),
               ],
             ),
           ),
-          Positioned(right: 18, bottom: 164, child: Column(children: [_MapFab(icon: Icons.gps_fixed_rounded, onTap: () => context.go('/safety-map/main')), const SizedBox(height: 10), _MapFab(icon: Icons.layers_outlined, onTap: () => context.go('/planning/recent-destinations'))])),
+          Positioned(right: 18, bottom: 104, child: Column(children: [_MapFab(icon: Icons.gps_fixed_rounded, onTap: () => context.go('/map')), const SizedBox(height: 10), _MapFab(icon: Icons.layers_outlined, onTap: () => context.go('/planning/recent-destinations'))])),
         ],
       ),
     );
@@ -228,7 +226,6 @@ class TripsHubScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Padding(padding: EdgeInsets.fromLTRB(12, 0, 12, 12), child: _BottomTabStrip(active: _HomeTab.trips)),
           ],
         ),
       ),
@@ -900,7 +897,7 @@ class _BottomTabStrip extends StatelessWidget {
   final _HomeTab active;
   @override
   Widget build(BuildContext context) {
-    final items = const [(_HomeTab.home, Icons.home_filled, 'HOME', '/home'), (_HomeTab.map, Icons.map_outlined, 'MAP', '/planning/recent-destinations'), (_HomeTab.trips, Icons.route_outlined, 'TRIPS', '/trips'), (_HomeTab.settings, Icons.settings_outlined, 'SETTINGS', '/settings/dashboard')];
+    final items = const [(_HomeTab.home, Icons.home_filled, 'HOME', '/home'), (_HomeTab.map, Icons.map_outlined, 'MAP', '/map'), (_HomeTab.trips, Icons.route_outlined, 'TRIPS', '/trips'), (_HomeTab.settings, Icons.settings_outlined, 'SETTINGS', '/settings')];
     return Container(padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)), child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [for (final item in items) InkWell(onTap: () => context.go(item.$4), borderRadius: BorderRadius.circular(14), child: Padding(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), child: Column(mainAxisSize: MainAxisSize.min, children: [Container(width: 34, height: 34, decoration: BoxDecoration(color: active == item.$1 ? AppColors.trustNavy : Colors.transparent, borderRadius: BorderRadius.circular(12)), child: Icon(item.$2, size: 18, color: active == item.$1 ? Colors.white : AppColors.textMuted)), const SizedBox(height: 4), Text(item.$3, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: active == item.$1 ? AppColors.trustNavy : AppColors.textMuted, fontWeight: FontWeight.w700))])))]));
   }
 }

@@ -75,7 +75,7 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
               Row(
                 children: [
                   IconButton(
-                    onPressed: () => context.go('/settings/dashboard'),
+                    onPressed: () => context.go('/settings'),
                     icon: const Icon(
                       Icons.arrow_back_rounded,
                       color: AppColors.trustNavy,
@@ -360,9 +360,9 @@ class _SettingsBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = const [
       ('HOME', Icons.home_filled, '/home'),
-      ('MAP', Icons.map_outlined, '/safety-map/main'),
+      ('MAP', Icons.map_outlined, '/map'),
       ('TRIPS', Icons.route_outlined, '/trips'),
-      ('SETTINGS', Icons.settings_outlined, '/settings/dashboard'),
+      ('SETTINGS', Icons.settings_outlined, '/settings'),
     ];
 
     return Container(

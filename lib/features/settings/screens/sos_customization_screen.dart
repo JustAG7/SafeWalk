@@ -53,7 +53,7 @@ class _SosCustomizationScreenState extends State<SosCustomizationScreen> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
           child: Column(
             children: [
-              Row(children: [IconButton(onPressed: () => context.go('/settings/dashboard'), icon: const Icon(Icons.arrow_back_rounded, color: AppColors.trustNavy)), Text('SOS Customization', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 15, backgroundColor: Color(0xFFEAF1FD), child: Icon(Icons.shield_outlined, size: 16, color: AppColors.skyBlue))]),
+              Row(children: [IconButton(onPressed: () => context.go('/settings'), icon: const Icon(Icons.arrow_back_rounded, color: AppColors.trustNavy)), Text('SOS Customization', style: theme.textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 15, backgroundColor: Color(0xFFEAF1FD), child: Icon(Icons.shield_outlined, size: 16, color: AppColors.skyBlue))]),
               Expanded(
                 child: ListView(
                   padding: const EdgeInsets.only(top: 8),
@@ -130,7 +130,7 @@ class _SettingsBottomBar extends StatelessWidget {
   final int activeIndex;
   @override
   Widget build(BuildContext context) {
-    final items = const [('HOME', Icons.home_filled, '/home'), ('MAP', Icons.map_outlined, '/safety-map/main'), ('TRIPS', Icons.route_outlined, '/trips'), ('SETTINGS', Icons.settings_outlined, '/settings/dashboard')];
+    final items = const [('HOME', Icons.home_filled, '/home'), ('MAP', Icons.map_outlined, '/map'), ('TRIPS', Icons.route_outlined, '/trips'), ('SETTINGS', Icons.settings_outlined, '/settings')];
     return Container(margin: const EdgeInsets.only(top: 8), padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24)), child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [for (var i = 0; i < items.length; i++) InkWell(onTap: () => context.go(items[i].$3), child: Column(mainAxisSize: MainAxisSize.min, children: [Container(width: 34, height: 34, decoration: BoxDecoration(color: activeIndex == i ? AppColors.trustNavy : Colors.transparent, borderRadius: BorderRadius.circular(12)), child: Icon(items[i].$2, size: 18, color: activeIndex == i ? Colors.white : AppColors.textMuted)), const SizedBox(height: 4), Text(items[i].$1, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: activeIndex == i ? AppColors.trustNavy : AppColors.textMuted, fontWeight: FontWeight.w700))]))]));
   }
 }

@@ -65,7 +65,7 @@ class _CompanionModeMainScreenState extends State<CompanionModeMainScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
-              child: Row(children: [Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
+              child: Row(children: [IconButton(onPressed: () => context.go('/home'), icon: const Icon(Icons.arrow_back_rounded, color: AppColors.trustNavy)), Text('Guardian Active', style: theme.textTheme.titleSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
             ),
             Expanded(
               child: ListView(

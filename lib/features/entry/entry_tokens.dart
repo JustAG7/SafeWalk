@@ -8,9 +8,9 @@ class EntryTokens {
   static const Color primary = Color(0xFF002444);
   static const Color primaryAlt = Color(0xFF1B3A5C);
   static const Color heading = Color(0xFF002444);
-  static const Color text = Color(0xFF43474E);
-  static const Color muted = Color(0xFF73777F);
-  static const Color subtle = Color(0xFF5C6778);
+  static const Color text = Color(0xFF384556);
+  static const Color muted = Color(0xFF5F6B7A);
+  static const Color subtle = Color(0xFF465668);
   static const Color line = Color(0xFFE2E8F0);
   static const Color fieldBorder = Color(0xFFE5EAF5);
   static const Color focus = Color(0xFF0058BE);
