@@ -1,5 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../core/constants/app_colors.dart';
 
 class AppNavigationShell extends StatelessWidget {
   const AppNavigationShell({
@@ -16,19 +18,14 @@ class AppNavigationShell extends StatelessWidget {
       selectedIcon: Icons.home,
     ),
     _NavigationTab(
-      label: 'Trips',
-      icon: Icons.route_outlined,
-      selectedIcon: Icons.route,
-    ),
-    _NavigationTab(
-      label: 'Contacts',
-      icon: Icons.people_outline,
-      selectedIcon: Icons.people,
-    ),
-    _NavigationTab(
       label: 'Map',
       icon: Icons.map_outlined,
       selectedIcon: Icons.map,
+    ),
+    _NavigationTab(
+      label: 'Trips',
+      icon: Icons.route_outlined,
+      selectedIcon: Icons.route,
     ),
     _NavigationTab(
       label: 'Settings',
@@ -41,22 +38,43 @@ class AppNavigationShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) {
-          navigationShell.goBranch(
-            index,
-            initialLocation: index == navigationShell.currentIndex,
-          );
-        },
-        destinations: [
-          for (final tab in _tabs)
-            NavigationDestination(
-              icon: Icon(tab.icon),
-              selectedIcon: Icon(tab.selectedIcon),
-              label: tab.label,
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
-        ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  for (var index = 0; index < _tabs.length; index++)
+                    _NavigationTabItem(
+                      tab: _tabs[index],
+                      selected: navigationShell.currentIndex == index,
+                      onTap: () {
+                        navigationShell.goBranch(
+                          index,
+                          initialLocation: index == navigationShell.currentIndex,
+                        );
+                      },
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -72,4 +90,55 @@ class _NavigationTab {
   final String label;
   final IconData icon;
   final IconData selectedIcon;
+}
+
+class _NavigationTabItem extends StatelessWidget {
+  const _NavigationTabItem({
+    required this.tab,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final _NavigationTab tab;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: selected ? AppColors.trustNavy : Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                selected ? tab.selectedIcon : tab.icon,
+                size: 18,
+                color: selected ? Colors.white : AppColors.textMuted,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              tab.label.toUpperCase(),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: selected ? AppColors.trustNavy : AppColors.textMuted,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

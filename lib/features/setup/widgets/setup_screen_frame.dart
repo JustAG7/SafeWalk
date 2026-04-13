@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_radius.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../shared/widgets/page_scaffold.dart';
@@ -223,7 +222,7 @@ class _HeroHeader extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 28,
-            backgroundColor: Colors.white.withOpacity(0.18),
+            backgroundColor: Colors.white.withValues(alpha: 0.18),
             foregroundColor: Colors.white,
             child: Icon(icon, size: 30),
           ),
@@ -238,7 +237,7 @@ class _HeroHeader extends StatelessWidget {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.14),
+                    color: Colors.white.withValues(alpha: 0.14),
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                   ),
                   child: Text(
@@ -259,7 +258,7 @@ class _HeroHeader extends StatelessWidget {
                 Text(
                   subtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white.withOpacity(0.92),
+                        color: Colors.white.withValues(alpha: 0.92),
                       ),
                 ),
               ],
@@ -270,3 +269,4 @@ class _HeroHeader extends StatelessWidget {
     );
   }
 }
+

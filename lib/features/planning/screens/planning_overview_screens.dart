@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -21,10 +21,24 @@ class MainHomeDashboardScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xFF3B5969), Color(0xFF233744)],
+                  colors: [Color(0xFF456374), Color(0xFF233744)],
                 ),
               ),
               child: CustomPaint(painter: _MapBackdropPainter()),
+            ),
+          ),
+          Positioned(
+            left: -8,
+            bottom: 72,
+            child: IgnorePointer(
+              child: Text(
+                'SAFE WALK',
+                style: theme.textTheme.displaySmall?.copyWith(
+                  color: Colors.white.withValues(alpha: 0.18),
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.2,
+                ),
+              ),
             ),
           ),
           SafeArea(
@@ -46,12 +60,14 @@ class MainHomeDashboardScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: Material(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(20),
+                    elevation: 6,
+                    shadowColor: Colors.black.withValues(alpha: 0.08),
                     child: InkWell(
                       onTap: () => context.go('/planning/search'),
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(20),
                       child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                         child: Row(
                           children: [
                             Icon(Icons.search_rounded, color: AppColors.textMuted),
@@ -69,12 +85,14 @@ class MainHomeDashboardScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: Material(
                     color: const Color(0xFFF5F8FC),
-                    borderRadius: BorderRadius.circular(26),
+                    borderRadius: BorderRadius.circular(28),
+                    elevation: 10,
+                    shadowColor: Colors.black.withValues(alpha: 0.08),
                     child: InkWell(
                       onTap: () => context.go('/planning/safety-status'),
-                      borderRadius: BorderRadius.circular(26),
+                      borderRadius: BorderRadius.circular(28),
                       child: Padding(
-                        padding: const EdgeInsets.all(18),
+                        padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
                         child: Row(
                           children: [
                             Expanded(
@@ -98,10 +116,20 @@ class MainHomeDashboardScreen extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              width: 46,
-                              height: 46,
-                              decoration: const BoxDecoration(color: Color(0xFFE3FAEF), shape: BoxShape.circle),
-                              child: const Icon(Icons.verified_rounded, color: AppColors.safeGreen),
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFE3FAEF),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF4EDEA3).withValues(alpha: 0.28),
+                                    blurRadius: 24,
+                                    spreadRadius: 2,
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(Icons.shield_rounded, color: AppColors.safeGreen),
                             ),
                           ],
                         ),
@@ -120,7 +148,7 @@ class MainHomeDashboardScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
                 const _BottomTabStrip(active: _HomeTab.home),
                 const SizedBox(height: 12),
               ],
@@ -219,7 +247,22 @@ class QuickGoHomeActionScreen extends StatelessWidget {
       safeArea: false,
       body: Stack(
         children: [
-          const Positioned.fill(child: DecoratedBox(decoration: BoxDecoration(gradient: RadialGradient(center: Alignment.topCenter, radius: 1.1, colors: [Color(0xFF6FA091), Color(0xFFE2F4EA)])))),
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.topCenter,
+                  radius: 1.2,
+                  colors: [Color(0xFF6B978E), Color(0xFFE6F5ED)],
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: CustomPaint(
+              painter: _QuickRoutePainter(),
+            ),
+          ),
           SafeArea(
             child: Column(
               children: [
@@ -250,7 +293,17 @@ class QuickGoHomeActionScreen extends StatelessWidget {
                       const SizedBox(height: 14),
                       Container(
                         padding: const EdgeInsets.all(18),
-                        decoration: BoxDecoration(color: Colors.white.withOpacity(0.92), borderRadius: BorderRadius.circular(28)),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.94),
+                          borderRadius: BorderRadius.circular(28),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.08),
+                              blurRadius: 24,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -287,11 +340,15 @@ class QuickGoHomeActionScreen extends StatelessWidget {
           ),
           Positioned(top: 160, right: 18, child: _MapFab(icon: Icons.gps_fixed_rounded, onTap: () => context.go('/safety-map/main'))),
           Positioned(top: 214, right: 18, child: _MapFab(icon: Icons.layers_outlined, onTap: () => context.go('/planning/route-options'))),
-          const Positioned(left: 170, top: 120, child: _RouteDot()),
-          const Positioned(left: 188, top: 160, child: _RouteDot()),
-          const Positioned(left: 206, top: 200, child: _RouteDot()),
-          const Positioned(left: 220, top: 240, child: _RouteDot()),
-          const Positioned(left: 214, top: 280, child: _RouteDot()),
+          Positioned(
+            left: 214,
+            top: 144,
+            child: Container(
+              width: 10,
+              height: 10,
+              decoration: const BoxDecoration(color: Color(0xFF0C4C2F), shape: BoxShape.circle),
+            ),
+          ),
           Positioned(
             right: 26,
             bottom: 86,
@@ -454,7 +511,7 @@ class SafetyStatusOverviewScreen extends StatelessWidget {
                         const SizedBox(height: 10),
                         Text('Secure Route Confirmed', style: theme.textTheme.titleLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 8),
-                        Text('The AI Sentinel has analyzed 12 live feeds and 4 crime reports along your current path. The environment is categorized as Ultra-Safe.', style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white.withOpacity(0.78), height: 1.5)),
+                        Text('The AI Sentinel has analyzed 12 live feeds and 4 crime reports along your current path. The environment is categorized as Ultra-Safe.', style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white.withValues(alpha: 0.82), height: 1.5)),
                       ],
                     ),
                   ),
@@ -526,7 +583,7 @@ class _SmartCityAlertsFeedScreenState extends State<SmartCityAlertsFeedScreen> {
                     _FilterChip(label: 'Street Lights', active: _filter == 'Street Lights', onTap: () => setState(() => _filter = 'Street Lights')),
                     const SizedBox(width: 8),
                     _FilterChip(label: 'Patrols', active: _filter == 'Patrols', onTap: () => setState(() => _filter = 'Patrols')),
-                  ]),
+                  ],),
                   const SizedBox(height: 18),
                   for (final item in _alerts) ...[
                     _AlertFeedTile(item: item),
@@ -542,7 +599,7 @@ class _SmartCityAlertsFeedScreenState extends State<SmartCityAlertsFeedScreen> {
                       Text('Broadway Safe Corridor', style: theme.textTheme.titleLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
                       const SizedBox(height: 4),
                       Text('Active lighting • 100% visibility • no current patrol issue', style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70)),
-                    ]),
+                    ],),
                   ),
                 ],
               ),
@@ -606,7 +663,39 @@ class _AlertFeedTile extends StatelessWidget {
   const _AlertFeedTile({required this.item});
   final _AlertItem item;
   @override
-  Widget build(BuildContext context) => Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(22)), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Container(width: 42, height: 42, decoration: BoxDecoration(color: item.accent, borderRadius: BorderRadius.circular(14)), child: Icon(item.icon, color: AppColors.trustNavy)), const SizedBox(width: 12), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Row(children: [Expanded(child: Text(item.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700))), Text(item.time, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.textMuted))]), const SizedBox(height: 6), Text(item.subtitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary, height: 1.35)), const SizedBox(height: 10), Row(children: [_SmallTag(text: item.tag1), const SizedBox(width: 6), _SmallTag(text: item.tag2)])]))]));
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(22)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(color: item.accent, borderRadius: BorderRadius.circular(14)),
+              child: Icon(item.icon, color: AppColors.trustNavy),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: Text(item.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700))),
+                      Text(item.time, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.textMuted)),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Text(item.subtitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary, height: 1.35)),
+                  const SizedBox(height: 10),
+                  Row(children: [_SmallTag(text: item.tag1), const SizedBox(width: 6), _SmallTag(text: item.tag2)]),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
 }
 
 class _SmallTag extends StatelessWidget {
@@ -625,7 +714,7 @@ class _InfoMetric extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(color: Colors.white.withOpacity(0.82), borderRadius: BorderRadius.circular(24)),
+        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.82), borderRadius: BorderRadius.circular(24)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -649,15 +738,33 @@ class _PrimaryDestinationCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: const Color(0xFFEAF7EF), borderRadius: BorderRadius.circular(999)),
-                child: const Text('ELITE SAFETY 9.8', style: TextStyle(color: AppColors.safeGreen, fontWeight: FontWeight.w700, fontSize: 11)),
+            Container(
+              height: 118,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF1C6074), Color(0xFF7AA7BD)],
+                ),
+              ),
+              child: Stack(
+                children: [
+                  Positioned.fill(child: CustomPaint(painter: _BuildingGlowPainter())),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(color: const Color(0xFFEAF7EF), borderRadius: BorderRadius.circular(999)),
+                      child: const Text('ELITE SAFETY', style: TextStyle(color: AppColors.safeGreen, fontWeight: FontWeight.w700, fontSize: 11)),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Icon(Icons.home_outlined, color: AppColors.trustNavy),
+            const SizedBox(height: 14),
+            const Icon(Icons.apartment_rounded, color: AppColors.trustNavy),
             const SizedBox(height: 12),
             Text('Partner\'s House', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy)),
             const SizedBox(height: 6),
@@ -786,13 +893,6 @@ class _StatusLine extends StatelessWidget {
       );
 }
 
-class _RouteDot extends StatelessWidget {
-  const _RouteDot();
-
-  @override
-  Widget build(BuildContext context) => Container(width: 8, height: 8, decoration: const BoxDecoration(color: Color(0xFF2374FF), shape: BoxShape.circle));
-}
-
 enum _HomeTab { home, map, trips, settings }
 
 class _BottomTabStrip extends StatelessWidget {
@@ -808,14 +908,99 @@ class _BottomTabStrip extends StatelessWidget {
 class _MapBackdropPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.white.withOpacity(0.16)..style = PaintingStyle.stroke..strokeWidth = 1;
-    for (double x = -20; x < size.width + 20; x += 26) { canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint); }
-    for (double y = 110; y < size.height; y += 26) { canvas.drawLine(Offset(0, y), Offset(size.width, y), paint); }
-    final roadPaint = Paint()..color = Colors.white.withOpacity(0.26)..style = PaintingStyle.stroke..strokeWidth = 2.2;
-    final path = Path()..moveTo(size.width * 0.7, 90)..cubicTo(size.width * 0.62, size.height * 0.3, size.width * 0.18, size.height * 0.38, size.width * 0.14, size.height * 0.72);
-    canvas.drawPath(path, roadPaint);
+    final grid = Paint()
+      ..color = Colors.white.withValues(alpha: 0.14)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+    for (double x = -20; x < size.width + 20; x += 24) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid);
+    }
+    for (double y = 110; y < size.height; y += 24) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), grid);
+    }
+
+    final roadPaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.22)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.4;
+    final path1 = Path()
+      ..moveTo(size.width * 0.76, 78)
+      ..cubicTo(size.width * 0.64, size.height * 0.26, size.width * 0.20, size.height * 0.36, size.width * 0.15, size.height * 0.70);
+    final path2 = Path()
+      ..moveTo(size.width * 0.15, size.height * 0.18)
+      ..quadraticBezierTo(size.width * 0.44, size.height * 0.22, size.width * 0.84, size.height * 0.12);
+    canvas.drawPath(path1, roadPaint);
+    canvas.drawPath(path2, roadPaint);
   }
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
+class _QuickRoutePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final field = Paint()
+      ..color = Colors.white.withValues(alpha: 0.08)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+    for (double x = 0; x < size.width; x += 28) {
+      canvas.drawLine(Offset(x, 70), Offset(x, size.height), field);
+    }
+    for (double y = 70; y < size.height; y += 28) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), field);
+    }
+
+    final route = Paint()
+      ..color = const Color(0xFF2C6FFF)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
+    final path = Path()
+      ..moveTo(size.width * 0.65, size.height * 0.20)
+      ..cubicTo(size.width * 0.70, size.height * 0.32, size.width * 0.52, size.height * 0.36, size.width * 0.56, size.height * 0.50)
+      ..quadraticBezierTo(size.width * 0.60, size.height * 0.62, size.width * 0.52, size.height * 0.70);
+    canvas.drawPath(path, route);
+
+    final dashed = Paint()
+      ..color = const Color(0xFF78A3FF)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
+    for (double i = 0; i < 6; i++) {
+      final start = Offset(size.width * (0.56 + (i * 0.015)), size.height * (0.47 + i * 0.03));
+      final end = Offset(start.dx + 2, start.dy + 8);
+      canvas.drawLine(start, end, dashed);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _BuildingGlowPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final glow = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.bottomLeft,
+        end: Alignment.topRight,
+        colors: [Color(0x66D7F0FF), Color(0x00FFFFFF)],
+      ).createShader(Offset.zero & size);
+    canvas.drawRect(Offset.zero & size, glow);
+
+    final line = Paint()
+      ..color = Colors.white.withValues(alpha: 0.22)
+      ..strokeWidth = 1;
+    for (double x = 26; x < size.width; x += 26) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), line);
+    }
+    for (double y = 18; y < size.height; y += 18) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), line);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
 

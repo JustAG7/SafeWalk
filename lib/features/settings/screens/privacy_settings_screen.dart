@@ -75,7 +75,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                         _RadioRow(title: 'Only Contacts', subtitle: 'Visible in your phone address book', selected: _visibility == 'contacts', onTap: () => setState(() => _visibility = 'contacts')),
                         const Divider(height: 18),
                         _RadioRow(title: 'Public', subtitle: 'Visible to nearby users for community safety', selected: _visibility == 'public', onTap: () => setState(() => _visibility = 'public')),
-                      ]),
+                      ],),
                     ),
                     const SizedBox(height: 18),
                     Text('DATA USAGE', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700)),

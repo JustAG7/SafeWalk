@@ -156,27 +156,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutePaths.trips,
-                name: AppRouteNames.trips,
-                builder: (context, state) => const TripsHubScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutePaths.contacts,
-                name: AppRouteNames.contacts,
-                builder: (context, state) => const TrustedContactsListScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
                 path: AppRoutePaths.map,
                 name: AppRouteNames.map,
                 builder: (context, state) => const SafetyMapMainScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutePaths.trips,
+                name: AppRouteNames.trips,
+                builder: (context, state) => const TripsHubScreen(),
               ),
             ],
           ),

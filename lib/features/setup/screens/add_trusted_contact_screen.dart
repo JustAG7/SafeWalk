@@ -119,7 +119,7 @@ class _AddTrustedContactScreenState extends State<AddTrustedContactScreen> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: _relationship,
+                  initialValue: _relationship,
                   items: _relationships
                       .map((item) => DropdownMenuItem(value: item, child: Text(item)))
                       .toList(),

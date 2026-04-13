@@ -161,7 +161,7 @@ class TripSummaryAnalyticsScreen extends StatelessWidget {
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.1),
+                              color: Colors.white.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(999),
                             ),
                             child: Text(
@@ -363,3 +363,4 @@ class _SummaryStat extends StatelessWidget {
     );
   }
 }
+

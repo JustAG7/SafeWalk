@@ -16,6 +16,7 @@ class _DestinationSearchScreenState extends State<DestinationSearchScreen> {
     text: 'North Broadway Pathway',
   );
   String _selectedQuickPick = 'Partner House';
+  bool _safetyRanking = true;
 
   @override
   void dispose() {
@@ -37,6 +38,14 @@ class _DestinationSearchScreenState extends State<DestinationSearchScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
+            'SEARCH RESULTS • ${_safetyRanking ? 'SAFE RANKING ACTIVE' : 'SMART SEARCH'}',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.skyBlue,
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+          const SizedBox(height: 10),
+          Text(
             'Destination Search',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   color: AppColors.trustNavy,
@@ -53,6 +62,19 @@ class _DestinationSearchScreenState extends State<DestinationSearchScreen> {
           ),
           const SizedBox(height: 18),
           _SearchField(controller: _controller),
+          const SizedBox(height: 14),
+          Material(
+            color: const Color(0xFFEFF5FF),
+            borderRadius: BorderRadius.circular(18),
+            child: SwitchListTile(
+              value: _safetyRanking,
+              activeThumbColor: AppColors.safeGreen,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+              title: const Text('Prioritize safest paths'),
+              subtitle: const Text('Rank by visibility, patrol activity, and guardian coverage.'),
+              onChanged: (value) => setState(() => _safetyRanking = value),
+            ),
+          ),
           const SizedBox(height: 16),
           Wrap(
             spacing: 10,
@@ -92,8 +114,8 @@ class _DestinationSearchScreenState extends State<DestinationSearchScreen> {
                       ),
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     Expanded(
                       child: _InlineMetric(
                         title: 'Coverage',
@@ -108,6 +130,11 @@ class _DestinationSearchScreenState extends State<DestinationSearchScreen> {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 12),
+                const _SoftPreviewTag(
+                  icon: Icons.verified_outlined,
+                  label: 'Guardian network verified for your next route',
                 ),
               ],
             ),
@@ -188,9 +215,18 @@ class _DestinationResultsScreenState extends State<DestinationResultsScreen> {
         backgroundColor: Color(0xFFEAD3B8),
         child: Icon(Icons.person, size: 16, color: AppColors.trustNavy),
       ),
+      bottomBar: const _PlanningBottomBar(activeIndex: 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Text(
+            'SEARCH RESULTS • SAFE RANKING ACTIVE',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.skyBlue,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 10),
           Text(
             'Destination results',
             style: theme.textTheme.headlineMedium?.copyWith(
@@ -228,7 +264,6 @@ class _DestinationResultsScreenState extends State<DestinationResultsScreen> {
           ],
         ],
       ),
-      bottomBar: const _PlanningBottomBar(activeIndex: 1),
     );
   }
 }
@@ -345,12 +380,20 @@ class _MapRouteOptionsScreenState extends State<MapRouteOptionsScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: [
-                      _MapModePill(label: 'Safety Mode', value: _mode, onTap: _showModeSheet),
+                      _MapModePill(label: 'SAFETY MODE', value: _mode, onTap: _showModeSheet),
                       const Spacer(),
                       _MapIconButton(icon: Icons.layers_outlined, onTap: () => _showSimpleFeedback('Map layers preview updated.')),
                       const SizedBox(width: 10),
                       _MapIconButton(icon: Icons.gps_fixed_rounded, onTap: () => _showSimpleFeedback('Centered on your current position.')),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 18),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: _LiveBadge(text: 'LIVE ROUTE MONITORING ACTIVE'),
                   ),
                 ),
                 const Spacer(),
@@ -364,8 +407,8 @@ class _MapRouteOptionsScreenState extends State<MapRouteOptionsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Expanded(
                             child: _RouteMetricCard(
                               title: 'RECOMMENDED',
@@ -558,6 +601,7 @@ class _StartTripConfirmationScreenState extends State<StartTripConfirmationScree
         backgroundColor: Color(0xFFEAD3B8),
         child: Icon(Icons.person, size: 16, color: AppColors.trustNavy),
       ),
+      bottomBar: const _PlanningBottomBar(activeIndex: 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -570,6 +614,14 @@ class _StartTripConfirmationScreenState extends State<StartTripConfirmationScree
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  'TRIP CONFIRMATION',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: AppColors.textMuted,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Text(
                   'DESTINATION',
                   style: theme.textTheme.labelSmall?.copyWith(
@@ -591,8 +643,8 @@ class _StartTripConfirmationScreenState extends State<StartTripConfirmationScree
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Expanded(child: _StatCard(title: 'Safety Score', value: '9.8/10', subtitle: 'Guardian route selected')),
               SizedBox(width: 12),
               Expanded(child: _StatCard(title: 'Visibility', value: 'High', subtitle: 'Well-lit streets')),
@@ -664,7 +716,6 @@ class _StartTripConfirmationScreenState extends State<StartTripConfirmationScree
           ),
         ],
       ),
-      bottomBar: const _PlanningBottomBar(activeIndex: 1),
     );
   }
 }
@@ -819,6 +870,39 @@ class _InlineMetric extends StatelessWidget {
   }
 }
 
+class _SoftPreviewTag extends StatelessWidget {
+  const _SoftPreviewTag({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3F6FB),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: AppColors.safeGreen),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.trustNavy,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _FilterPill extends StatelessWidget {
   const _FilterPill({required this.label, required this.active, required this.onTap});
 
@@ -887,6 +971,22 @@ class _DestinationResultCard extends StatelessWidget {
                     colors: item.featured ? const [Color(0xFF2D708B), Color(0xFF183A4D)] : const [Color(0xFFEAF1FD), Color(0xFFD9E4F4)],
                   ),
                 ),
+                child: item.featured
+                    ? Stack(
+                        children: [
+                          Positioned.fill(child: CustomPaint(painter: _BuildingPreviewPainter())),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(color: const Color(0xFFEAF7EF), borderRadius: BorderRadius.circular(999)),
+                              child: Text(item.tag, style: const TextStyle(color: AppColors.safeGreen, fontWeight: FontWeight.w700, fontSize: 10)),
+                            ),
+                          ),
+                        ],
+                      )
+                    : null,
               ),
               const SizedBox(height: 14),
               Row(
@@ -907,11 +1007,12 @@ class _DestinationResultCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(color: const Color(0xFFEAF7EF), borderRadius: BorderRadius.circular(999)),
-                        child: Text(item.tag, style: const TextStyle(color: AppColors.safeGreen, fontWeight: FontWeight.w700, fontSize: 10)),
-                      ),
+                      if (!item.featured)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(color: const Color(0xFFEAF7EF), borderRadius: BorderRadius.circular(999)),
+                          child: Text(item.tag, style: const TextStyle(color: AppColors.safeGreen, fontWeight: FontWeight.w700, fontSize: 10)),
+                        ),
                       const SizedBox(height: 10),
                       Text(item.score, style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColors.safeGreen, fontWeight: FontWeight.w800)),
                       Text('SCORE', style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)),
@@ -1083,7 +1184,7 @@ class _RouteComparisonBottomSheetScreenState extends State<RouteComparisonBottom
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Choose your path',
+                        'CHOOSE YOUR PATH',
                         style: theme.textTheme.labelSmall?.copyWith(
                           color: AppColors.textMuted,
                           fontWeight: FontWeight.w700,
@@ -1435,18 +1536,27 @@ class _RouteRecommendationAiScreenState extends State<RouteRecommendationAiScree
                 const SizedBox(height: 8),
                 Text('SafeWalk ranked these backups if conditions change while you are walking.', style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary, height: 1.45)),
                 const SizedBox(height: 18),
-                for (final entry in options.entries) ...[
-                  RadioListTile<String>(
-                    contentPadding: EdgeInsets.zero,
-                    activeColor: AppColors.trustNavy,
-                    value: entry.key,
-                    groupValue: _selectedBackupRoute,
-                    title: Text(entry.key),
-                    subtitle: Text(entry.value),
-                    onChanged: (value) => setSheetState(() => _selectedBackupRoute = value ?? _selectedBackupRoute),
+                RadioGroup<String>(
+                  groupValue: _selectedBackupRoute,
+                  onChanged: (value) {
+                    if (value == null) return;
+                    setSheetState(() => _selectedBackupRoute = value);
+                  },
+                  child: Column(
+                    children: [
+                      for (final entry in options.entries) ...[
+                        RadioListTile<String>(
+                          contentPadding: EdgeInsets.zero,
+                          activeColor: AppColors.trustNavy,
+                          value: entry.key,
+                          title: Text(entry.key),
+                          subtitle: Text(entry.value),
+                        ),
+                        if (entry.key != options.keys.last) const Divider(height: 1),
+                      ],
+                    ],
                   ),
-                  if (entry.key != options.keys.last) const Divider(height: 1),
-                ],
+                ),
                 const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
@@ -1501,6 +1611,7 @@ class _RouteRecommendationAiScreenState extends State<RouteRecommendationAiScree
         backgroundColor: Color(0xFFEAD3B8),
         child: Icon(Icons.person, size: 16, color: AppColors.trustNavy),
       ),
+      bottomBar: const _PlanningBottomBar(activeIndex: 1),
       child: Column(
         children: [
           Container(
@@ -1526,6 +1637,14 @@ class _RouteRecommendationAiScreenState extends State<RouteRecommendationAiScree
           ),
           const SizedBox(height: 22),
           Text(
+            'GUARDIAN AI ACTIVE',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.skyBlue,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
             'Route Recommendation',
             style: theme.textTheme.headlineSmall?.copyWith(
               color: AppColors.trustNavy,
@@ -1540,6 +1659,7 @@ class _RouteRecommendationAiScreenState extends State<RouteRecommendationAiScree
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'I’ve optimized your path for maximum visibility. This route adds 2 minutes but avoids 3 low-light corridors.',
@@ -1615,7 +1735,6 @@ class _RouteRecommendationAiScreenState extends State<RouteRecommendationAiScree
           ),
         ],
       ),
-      bottomBar: const _PlanningBottomBar(activeIndex: 1),
     );
   }
 }
@@ -1743,7 +1862,11 @@ class _ComparisonOptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: primary ? const Color(0xFFEAF1FD) : Colors.white, borderRadius: BorderRadius.circular(24)),
+      decoration: BoxDecoration(
+        color: primary ? const Color(0xFFEAF1FD) : Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: primary ? Border.all(color: const Color(0xFFC8D9F6)) : null,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1953,7 +2076,14 @@ class _GuardianAvatar extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircleAvatar(radius: 24, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, color: AppColors.trustNavy)),
+            Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: const Color(0xFF9DE2C1), width: 2),
+              ),
+              child: const CircleAvatar(radius: 24, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, color: AppColors.trustNavy)),
+            ),
             const SizedBox(height: 6),
             Text(name, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)),
           ],
@@ -2033,17 +2163,19 @@ class _PlanningBottomBar extends StatelessWidget {
 class _PlanningMapPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final grid = Paint()..color = Colors.white.withOpacity(0.08)..style = PaintingStyle.stroke..strokeWidth = 1;
+    final grid = Paint()..color = Colors.white.withValues(alpha: 0.08)..style = PaintingStyle.stroke..strokeWidth = 1;
     for (double x = 0; x < size.width; x += 28) { canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid); }
     for (double y = 0; y < size.height; y += 28) { canvas.drawLine(Offset(0, y), Offset(size.width, y), grid); }
 
     final route = Paint()..color = const Color(0xFF1E66F5)..strokeWidth = 4..strokeCap = StrokeCap.round;
+    final routeGlow = Paint()..color = const Color(0xFF1E66F5).withValues(alpha: 0.22)..strokeWidth = 10..strokeCap = StrokeCap.round;
     final safe = Paint()..color = const Color(0xFF5BE39D)..style = PaintingStyle.fill;
 
     final path = Path()
       ..moveTo(size.width * 0.35, size.height * 0.8)
       ..quadraticBezierTo(size.width * 0.42, size.height * 0.58, size.width * 0.48, size.height * 0.42)
       ..quadraticBezierTo(size.width * 0.58, size.height * 0.2, size.width * 0.72, size.height * 0.1);
+    canvas.drawPath(path, routeGlow);
     canvas.drawPath(path, route);
     canvas.drawCircle(Offset(size.width * 0.35, size.height * 0.8), 7, safe);
     canvas.drawCircle(Offset(size.width * 0.72, size.height * 0.1), 6, Paint()..color = const Color(0xFFFF5A5A));
@@ -2053,10 +2185,35 @@ class _PlanningMapPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
+class _BuildingPreviewPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final line = Paint()
+      ..color = Colors.white.withValues(alpha: 0.16)
+      ..strokeWidth = 1;
+    for (double x = 16; x < size.width; x += 18) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), line);
+    }
+    for (double y = 16; y < size.height; y += 16) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), line);
+    }
+    final accent = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0x66D9F4FF), Color(0x00FFFFFF)],
+      ).createShader(Offset.zero & size);
+    canvas.drawRect(Offset.zero & size, accent);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
 class _MiniMapPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final grid = Paint()..color = Colors.white.withOpacity(0.07)..style = PaintingStyle.stroke..strokeWidth = 1;
+    final grid = Paint()..color = Colors.white.withValues(alpha: 0.07)..style = PaintingStyle.stroke..strokeWidth = 1;
     for (double x = 0; x < size.width; x += 26) { canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid); }
     for (double y = 0; y < size.height; y += 26) { canvas.drawLine(Offset(0, y), Offset(size.width, y), grid); }
 
@@ -2086,4 +2243,5 @@ class _ScanGridPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
 

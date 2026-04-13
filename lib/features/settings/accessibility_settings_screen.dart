@@ -321,7 +321,7 @@ class _AccessibilitySettingsScreenState extends State<AccessibilitySettingsScree
                           Text(
                             'SafeWalk adapts to your accessibility preferences to optimize safety alerts and guided actions.',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: Colors.white.withOpacity(0.92),
+                              color: Colors.white.withValues(alpha: 0.92),
                               height: 1.45,
                             ),
                           ),
@@ -494,3 +494,4 @@ class _ChoiceChip extends StatelessWidget {
     );
   }
 }
+

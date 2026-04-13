@@ -416,7 +416,7 @@ class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()
-      ..color = Colors.white.withOpacity(0.14)
+      ..color = Colors.white.withValues(alpha: 0.14)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
     for (double x = 0; x < size.width; x += 24) {
@@ -486,3 +486,4 @@ class _BottomBar extends StatelessWidget {
     );
   }
 }
+

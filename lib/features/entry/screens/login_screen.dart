@@ -185,129 +185,148 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return EntryScaffold(
-      child: EntrySurface(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const EntryStatusBar(dark: false),
-              const SizedBox(height: 30),
-              const SizedBox(
-                width: 52,
-                height: 52,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: EntryBrandMark(size: 42, showGlow: false),
+      padding: EdgeInsets.zero,
+      child: EntryPhoneShell(
+        screenColor: const Color(0xFFF8FAFF),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -58,
+              top: -84,
+              child: Container(
+                width: 220,
+                height: 220,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFFD7E4FF).withValues(alpha: 0.38),
                 ),
               ),
-              const SizedBox(height: 30),
-              const Text(
-                'Welcome Back',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  color: EntryTokens.heading,
+            ),
+            Positioned(
+              left: -90,
+              bottom: -130,
+              child: Container(
+                width: 260,
+                height: 260,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFFDDF3EC).withValues(alpha: 0.42),
                 ),
               ),
-              const SizedBox(height: 10),
-              const Text(
-                'Sign in to continue your safe journey.',
-                style: TextStyle(color: EntryTokens.text, fontSize: 16, height: 1.5),
-              ),
-              const SizedBox(height: 30),
-              EntryInputField(
-                label: 'EMAIL ADDRESS',
-                controller: _emailController,
-                hint: 'name@example.com',
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                validator: _validateEmail,
-              ),
-              const SizedBox(height: 18),
-              Row(
-                children: [
-                  const EntrySectionLabel('PASSWORD'),
-                  const Spacer(),
-                  TextButton(
-                    onPressed: () => _showForgotDialog(),
-                    child: const Text('FORGOT?'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                validator: _validatePassword,
-                decoration: InputDecoration(
-                  hintText: 'password',
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.8),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: const BorderSide(color: EntryTokens.fieldBorder),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: const BorderSide(color: EntryTokens.fieldBorder),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: const BorderSide(color: EntryTokens.focus, width: 1.4),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-                    icon: Icon(_obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                  ),
-                ),
-              ),
-              if (_errorText != null) ...[
-                const SizedBox(height: 12),
-                Text(
-                  _errorText!,
-                  style: const TextStyle(color: EntryTokens.danger, fontWeight: FontWeight.w600),
-                ),
-              ],
-              const SizedBox(height: 24),
-              EntryPrimaryButton(
-                label: 'Log In',
-                onPressed: () => _submit(),
-                isLoading: _isSubmitting,
-              ),
-              const SizedBox(height: 28),
-              const EntryDividerLabel(label: 'Or continue with'),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: EntrySocialButton(
-                      label: 'Apple',
-                      icon: mockAuthProviders[0].icon,
-                      onPressed: () => _showProviderSheet(mockAuthProviders[0]),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(28, 32, 28, 28),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 20),
+                    const SizedBox(
+                      width: 56,
+                      height: 56,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: EntryBrandMark(size: 44, showGlow: false),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: EntrySocialButton(
-                      label: 'Google',
-                      icon: Icons.g_mobiledata_rounded,
-                      onPressed: () => _showProviderSheet(mockAuthProviders[1]),
+                    const SizedBox(height: 26),
+                    const Text(
+                      'Welcome Back',
+                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: EntryTokens.heading, height: 1.05),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Sign in to continue your safe journey.',
+                      style: TextStyle(color: EntryTokens.text, fontSize: 16, height: 1.5),
+                    ),
+                    const SizedBox(height: 30),
+                    EntryInputField(
+                      label: 'EMAIL ADDRESS',
+                      controller: _emailController,
+                      hint: 'name@example.com',
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      validator: _validateEmail,
+                    ),
+                    const SizedBox(height: 18),
+                    Row(
+                      children: [
+                        const EntrySectionLabel('PASSWORD'),
+                        const Spacer(),
+                        TextButton(onPressed: () => _showForgotDialog(), child: const Text('FORGOT?')),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      validator: _validatePassword,
+                      decoration: InputDecoration(
+                        hintText: 'password',
+                        filled: true,
+                        fillColor: Colors.white.withValues(alpha: 0.92),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: const BorderSide(color: EntryTokens.fieldBorder),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: const BorderSide(color: EntryTokens.fieldBorder),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: const BorderSide(color: EntryTokens.focus, width: 1.4),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                          icon: Icon(_obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                        ),
+                      ),
+                    ),
+                    if (_errorText != null) ...[
+                      const SizedBox(height: 12),
+                      Text(_errorText!, style: const TextStyle(color: EntryTokens.danger, fontWeight: FontWeight.w600)),
+                    ],
+                    const SizedBox(height: 24),
+                    EntryPrimaryButton(label: 'Log In', onPressed: () => _submit(), isLoading: _isSubmitting),
+                    const SizedBox(height: 22),
+                    const EntryDividerLabel(label: 'Or continue with'),
+                    const SizedBox(height: 18),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: EntrySocialButton(
+                            label: 'Apple',
+                            icon: mockAuthProviders[0].icon,
+                            onPressed: () => _showProviderSheet(mockAuthProviders[0]),
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: EntrySocialButton(
+                            label: 'Google',
+                            icon: Icons.g_mobiledata_rounded,
+                            onPressed: () => _showProviderSheet(mockAuthProviders[1]),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    EntryFooterPrompt(
+                      leadingText: 'New to SafeWalk?',
+                      actionText: 'Create Account',
+                      onPressed: () => context.go(AppRoutePaths.signUp),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 28),
-              EntryFooterPrompt(
-                leadingText: 'New to SafeWalk?',
-                actionText: 'Create Account',
-                onPressed: () => context.go(AppRoutePaths.signUp),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+

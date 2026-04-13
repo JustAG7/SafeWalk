@@ -43,59 +43,93 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return EntryScaffold(
       backdropStyle: EntryBackdropStyle.dark,
-      child: SizedBox(
-        height: 760,
-        child: Column(
+      padding: EdgeInsets.zero,
+      child: EntryPhoneShell(
+        screenGradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF0A2646), Color(0xFF103964), Color(0xFF0A2646)],
+        ),
+        child: Stack(
           children: [
-            const EntryStatusBar(dark: true),
-            const Spacer(),
-            const EntryBrandMark(size: 104),
-            const SizedBox(height: 28),
-            const Text(
-              EntryMockCopy.brandName,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 42,
-                fontWeight: FontWeight.w800,
-                height: 1,
+            Positioned(
+              top: 18,
+              left: 18,
+              child: Container(
+                width: 180,
+                height: 180,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF38D6B5).withValues(alpha: 0.06),
+                ),
               ),
             ),
-            const SizedBox(height: 14),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Positioned(
+              right: -60,
+              bottom: -20,
+              child: Container(
+                width: 240,
+                height: 240,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF57E2B0).withValues(alpha: 0.04),
+                ),
+              ),
+            ),
+            const Column(
               children: [
-                Icon(Icons.circle, size: 8, color: EntryTokens.success),
-                SizedBox(width: 10),
+                SizedBox(height: 240),
+                EntryBrandMark(size: 96),
+                SizedBox(height: 30),
                 Text(
-                  'ACTIVE GUARDIAN',
+                  EntryMockCopy.brandName,
                   style: TextStyle(
-                    color: Color(0xFF8CA1BC),
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 3,
+                    color: Colors.white,
+                    fontSize: 44,
+                    fontWeight: FontWeight.w800,
+                    height: 1,
                   ),
                 ),
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.circle, size: 7, color: EntryTokens.success),
+                    SizedBox(width: 10),
+                    Text(
+                      'ACTIVE GUARDIAN',
+                      style: TextStyle(
+                        color: Color(0xFF8FA3C0),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 3.2,
+                      ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                SizedBox(
+                  width: 34,
+                  child: EntryProgressDots(currentIndex: 0, count: 2),
+                ),
+                SizedBox(height: 32),
+                Text(
+                  EntryMockCopy.splashFooter,
+                  style: TextStyle(
+                    color: Color(0xFF5D799C),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 2.2,
+                  ),
+                ),
+                SizedBox(height: 52),
               ],
             ),
-            const Spacer(),
-            const SizedBox(
-              width: 56,
-              child: EntryProgressDots(currentIndex: 0, count: 2),
-            ),
-            const SizedBox(height: 28),
-            const Text(
-              EntryMockCopy.splashFooter,
-              style: TextStyle(
-                color: Color(0xFF5C7696),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 2.2,
+            Positioned.fill(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(onTap: _continue),
               ),
-            ),
-            const SizedBox(height: 28),
-            TextButton(
-              onPressed: _continue,
-              child: const Text('Continue', style: TextStyle(color: Colors.white70)),
             ),
           ],
         ),
@@ -103,3 +137,4 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+

@@ -88,14 +88,19 @@ class _WorkAddressSetupScreenState extends State<WorkAddressSetupScreen> {
     return PageScaffold(
       backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 430),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 430,
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                   Row(
                     children: [
                       Row(
@@ -248,10 +253,12 @@ class _WorkAddressSetupScreenState extends State<WorkAddressSetupScreen> {
                     onPressed: () => context.go('/setup/complete'),
                     child: const Text('SKIP FOR NOW'),
                   ),
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

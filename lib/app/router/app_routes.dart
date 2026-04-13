@@ -20,7 +20,6 @@ class AppRouteNames {
   static const setupComplete = 'setup-complete';
   static const home = 'home';
   static const trips = 'trips';
-  static const contacts = 'contacts';
   static const map = 'map';
   static const settings = 'settings';
   static const quickGoHome = 'quick-go-home';
@@ -96,7 +95,6 @@ class AppRoutePaths {
   static const setupComplete = '/setup/complete';
   static const home = '/home';
   static const trips = '/trips';
-  static const contacts = '/contacts';
   static const map = '/map';
   static const settings = '/settings';
   static const quickGoHome = '/planning/quick-go-home';

@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class EntryScaffold extends StatelessWidget {
               left: -72,
               child: _GlowOrb(
                 size: 220,
-                color: _isDark ? EntryTokens.sky.withOpacity(0.14) : const Color(0xFFDCE8FF),
+                color: _isDark ? EntryTokens.sky.withValues(alpha: 0.14) : const Color(0xFFDCE8FF),
               ),
             ),
             Positioned(
@@ -50,23 +51,85 @@ class EntryScaffold extends StatelessWidget {
               bottom: -110,
               child: _GlowOrb(
                 size: 260,
-                color: _isDark ? const Color(0xFF56E3AE).withOpacity(0.10) : const Color(0xFFCFF5E7),
+                color: _isDark ? const Color(0xFF56E3AE).withValues(alpha: 0.10) : const Color(0xFFCFF5E7),
               ),
             ),
             SafeArea(
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: padding,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: maxWidth),
-                    child: child,
-                  ),
-                ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    padding: padding,
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: maxWidth,
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: child,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class EntryPhoneShell extends StatelessWidget {
+  const EntryPhoneShell({
+    super.key,
+    required this.child,
+    this.bezelColor = const Color(0xFF17253A),
+    this.screenColor = Colors.white,
+    this.screenGradient,
+    this.showDynamicIsland = false,
+    this.showHomeIndicator = true,
+  });
+
+  final Widget child;
+  final Color bezelColor;
+  final Color screenColor;
+  final Gradient? screenGradient;
+  final bool showDynamicIsland;
+  final bool showHomeIndicator;
+
+  @override
+  Widget build(BuildContext context) {
+    const designWidth = 390.0;
+    const designHeight = 844.0;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth.isFinite ? constraints.maxWidth : designWidth;
+        final canvasWidth = math.min<double>(availableWidth, 420.0);
+        final canvasHeight = designHeight * (canvasWidth / designWidth);
+
+        return Center(
+          child: SizedBox(
+            width: canvasWidth,
+            height: canvasHeight,
+            child: FittedBox(
+              alignment: Alignment.topCenter,
+              fit: BoxFit.fill,
+              child: SizedBox(
+                width: designWidth,
+                height: designHeight,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: screenColor,
+                    gradient: screenGradient,
+                  ),
+                  child: child,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -125,7 +188,7 @@ class EntrySurface extends StatelessWidget {
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.88),
+        color: Colors.white.withValues(alpha: 0.88),
         borderRadius: BorderRadius.circular(32),
         border: Border.all(color: const Color(0x1AC3C6CF)),
         boxShadow: EntryTokens.surfaceShadow,
@@ -156,14 +219,27 @@ class EntryBrandMark extends StatelessWidget {
         boxShadow: showGlow
             ? [
                 BoxShadow(
-                  color: EntryTokens.sky.withOpacity(0.26),
+                  color: EntryTokens.sky.withValues(alpha: 0.26),
                   blurRadius: 26,
                   spreadRadius: 1,
                 ),
               ]
             : null,
       ),
-      child: const Icon(Icons.shield_rounded, color: Colors.white, size: 34),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Icon(Icons.shield_rounded, color: Colors.white, size: size * 0.42),
+          Positioned(
+            top: size * 0.36,
+            child: Icon(
+              Icons.favorite_rounded,
+              color: EntryTokens.primaryAlt,
+              size: size * 0.14,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -175,16 +251,7 @@ class EntryStatusBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = dark ? Colors.white : EntryTokens.subtle;
-    return Row(
-      children: [
-        Text('9:41', style: TextStyle(color: color, fontWeight: FontWeight.w700)),
-        const Spacer(),
-        Icon(Icons.network_wifi_rounded, color: color, size: 16),
-        const SizedBox(width: 6),
-        Icon(Icons.battery_6_bar_rounded, color: color, size: 16),
-      ],
-    );
+    return const SizedBox.shrink();
   }
 }
 
@@ -331,7 +398,7 @@ class EntryOutlineButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: Colors.white,
-          side: BorderSide(color: Colors.white.withOpacity(0.22)),
+          side: BorderSide(color: Colors.white.withValues(alpha: 0.22)),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         ),
         child: Text(label, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
@@ -382,7 +449,7 @@ class EntrySocialButton extends StatelessWidget {
       child: OutlinedButton.icon(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.white.withOpacity(0.75),
+          backgroundColor: Colors.white.withValues(alpha: 0.75),
           foregroundColor: const Color(0xFF111C2D),
           side: const BorderSide(color: EntryTokens.line),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
@@ -441,7 +508,7 @@ class EntryInputField extends StatelessWidget {
                   ),
             prefixIconConstraints: const BoxConstraints(minWidth: 50),
             suffixIcon: trailing,
-            fillColor: Colors.white.withOpacity(0.8),
+            fillColor: Colors.white.withValues(alpha: 0.8),
             filled: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
             border: OutlineInputBorder(

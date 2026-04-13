@@ -296,7 +296,7 @@ class _ContactTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: selected
-              ? AppColors.skyBlue.withOpacity(0.3)
+              ? AppColors.skyBlue.withValues(alpha: 0.3)
               : AppColors.outlineVariant,
         ),
       ),
@@ -431,3 +431,4 @@ class _EmptySearchState extends StatelessWidget {
     );
   }
 }
+

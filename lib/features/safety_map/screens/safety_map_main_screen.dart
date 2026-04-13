@@ -132,7 +132,7 @@ class _SafetyMapMainScreenState extends State<SafetyMapMainScreen> {
                     child: Ink(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.96),
+                        color: Colors.white.withValues(alpha: 0.96),
                         borderRadius: BorderRadius.circular(18),
                       ),
                       child: Row(
@@ -250,7 +250,7 @@ class _ToggleChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: active ? AppColors.trustNavy : Colors.white.withOpacity(0.16),
+      color: active ? AppColors.trustNavy : Colors.white.withValues(alpha: 0.16),
       borderRadius: BorderRadius.circular(999),
       child: InkWell(
         onTap: onTap,
@@ -434,3 +434,4 @@ class _SafetyMapPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+

@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -73,7 +73,7 @@ class ActiveTripMainScreen extends StatelessWidget {
                   colors: [Color(0xFFB5C96D), Color(0xFF6F8E3A)],
                 ),
               ),
-              child: CustomPaint(painter: _GuardianMapPainter(greenMode: true)),
+              child: const CustomPaint(painter: _GuardianMapPainter(greenMode: true)),
             ),
           ),
           SafeArea(
@@ -92,7 +92,7 @@ class ActiveTripMainScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
                   child: Material(
-                    color: Colors.white.withOpacity(0.92),
+                    color: Colors.white.withValues(alpha: 0.92),
                     borderRadius: BorderRadius.circular(26),
                     child: InkWell(
                       onTap: showTripStatusSheet,
@@ -214,7 +214,7 @@ class LiveNavigationScreen extends StatelessWidget {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [Color(0xFFF1F3F6), Color(0xFFD9DEE6)], begin: Alignment.topCenter, end: Alignment.bottomCenter),
               ),
-              child: CustomPaint(painter: _GuardianMapPainter()),
+              child: const CustomPaint(painter: _GuardianMapPainter()),
             ),
           ),
           SafeArea(
@@ -228,7 +228,7 @@ class LiveNavigationScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 18, 16, 0),
                   child: Container(
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(color: Colors.white.withOpacity(0.94), borderRadius: BorderRadius.circular(22)),
+                    decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.94), borderRadius: BorderRadius.circular(22)),
                     child: Row(children: [Container(width: 44, height: 44, decoration: BoxDecoration(color: const Color(0xFFEAF1FD), borderRadius: BorderRadius.circular(16)), child: const Icon(Icons.turn_right_rounded, color: AppColors.trustNavy)), const SizedBox(width: 12), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Turn Right onto 5th Ave', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy)), const SizedBox(height: 4), Text('in 200m • 4 mins remaining', style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary))]))]),
                   ),
                 ),
@@ -341,8 +341,8 @@ class LiveContactTrackingScreen extends StatelessWidget {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Row(children: [Expanded(child: Text('Active Protection', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy))), const CircleAvatar(radius: 5, backgroundColor: Color(0xFF4BE090))]),
                       const SizedBox(height: 14),
-                      Container(height: 164, decoration: BoxDecoration(color: const Color(0xFF164B69), borderRadius: BorderRadius.circular(22)), child: CustomPaint(painter: _MiniTrackingPainter())),
-                    ]),
+                      Container(height: 164, decoration: BoxDecoration(color: const Color(0xFF164B69), borderRadius: BorderRadius.circular(22)), child: const CustomPaint(painter: _MiniTrackingPainter())),
+                    ],),
                   ),
                   const SizedBox(height: 16),
                   Row(
@@ -570,7 +570,7 @@ class NeedHelpFlowScreen extends StatelessWidget {
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color(0xFF18324A), Color(0xFF0C1B2B)], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-              child: CustomPaint(painter: _GuardianMapPainter(darkMode: true)),
+              child: const CustomPaint(painter: _GuardianMapPainter(darkMode: true)),
             ),
           ),
           SafeArea(
@@ -581,7 +581,7 @@ class NeedHelpFlowScreen extends StatelessWidget {
                 children: [
                   Row(children: [IconButton(onPressed: () => context.go('/trip-live/check-in'), icon: const Icon(Icons.close_rounded, color: Colors.white)), Text('Emergency Help', style: theme.textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)), const Spacer(), const CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAD3B8), child: Icon(Icons.person, size: 14, color: AppColors.trustNavy))]),
                   const SizedBox(height: 18),
-                  Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(color: Colors.white.withOpacity(0.12), borderRadius: BorderRadius.circular(999)), child: Text('Action Required', style: theme.textTheme.labelSmall?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700))),
+                  Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(999)), child: Text('Action Required', style: theme.textTheme.labelSmall?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700))),
                   const Spacer(),
                   _EmergencyActionTile(color: AppColors.emergencyRed, icon: Icons.emergency, title: 'Call 911', subtitle: 'Emergency Services', onTap: () => context.go('/emergency/hotline')),
                   const SizedBox(height: 12),
@@ -627,7 +627,7 @@ class TripProgressUpdateScreen extends StatelessWidget {
                 Container(
                   height: 140,
                   decoration: BoxDecoration(color: const Color(0xFFC8D5C0), borderRadius: BorderRadius.circular(24)),
-                  child: CustomPaint(painter: _MiniTrackingPainter(lightMode: true)),
+                  child: const CustomPaint(painter: _MiniTrackingPainter(lightMode: true)),
                 ),
               ],
             ),
@@ -687,7 +687,7 @@ class TripProgressUpdateScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Text('You\'re making\ngreat progress.', style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.trustNavy, height: 1.0)),
             const SizedBox(height: 18),
-            Row(children: [Expanded(child: _ProgressData(title: 'TOTAL DISTANCE', value: '68%', subtitle: 'completed')), const SizedBox(width: 14), Expanded(child: _ProgressData(title: 'ESTIMATED ARRIVAL', value: '22:14', subtitle: ''))]),
+            const Row(children: [Expanded(child: _ProgressData(title: 'TOTAL DISTANCE', value: '68%', subtitle: 'completed')), SizedBox(width: 14), Expanded(child: _ProgressData(title: 'ESTIMATED ARRIVAL', value: '22:14', subtitle: ''))]),
             const SizedBox(height: 12),
             ClipRRect(borderRadius: BorderRadius.circular(999), child: const LinearProgressIndicator(value: 0.68, minHeight: 8, backgroundColor: Color(0xFFDCE5F0), valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF2374FF)))),
             const SizedBox(height: 18),
@@ -699,7 +699,7 @@ class TripProgressUpdateScreen extends StatelessWidget {
               child: InkWell(
                 onTap: showProgressMapSheet,
                 borderRadius: BorderRadius.circular(24),
-                child: SizedBox(
+                child: const SizedBox(
                   height: 140,
                   child: CustomPaint(painter: _MiniTrackingPainter(lightMode: true)),
                 ),
@@ -750,7 +750,7 @@ class _MiniAvatarStack extends StatelessWidget {
   const _MiniAvatarStack({this.onTap});
   final VoidCallback? onTap;
   @override
-  Widget build(BuildContext context) => InkWell(onTap: onTap, borderRadius: BorderRadius.circular(999), child: Row(children: const [CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAF1FD), child: Text('+3', style: TextStyle(fontSize: 10, color: AppColors.skyBlue, fontWeight: FontWeight.w700)))]));
+  Widget build(BuildContext context) => InkWell(onTap: onTap, borderRadius: BorderRadius.circular(999), child: const Row(children: [CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Colors.white, child: Icon(Icons.person, size: 14, color: AppColors.textMuted)), SizedBox(width: -4), CircleAvatar(radius: 14, backgroundColor: Color(0xFFEAF1FD), child: Text('+3', style: TextStyle(fontSize: 10, color: AppColors.skyBlue, fontWeight: FontWeight.w700)))]));
 }
 
 class _MiniStatusCard extends StatelessWidget {
@@ -759,7 +759,7 @@ class _MiniStatusCard extends StatelessWidget {
   final String value;
   final VoidCallback? onTap;
   @override
-  Widget build(BuildContext context) => Material(color: Colors.white.withOpacity(0.9), borderRadius: BorderRadius.circular(16), child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(16), child: Padding(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10), child: Column(children: [Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text(value, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700))]))));
+  Widget build(BuildContext context) => Material(color: Colors.white.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(16), child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(16), child: Padding(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10), child: Column(children: [Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.textMuted, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text(value, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700))]))));
 }
 
 class _WatcherTile extends StatelessWidget {
@@ -784,7 +784,7 @@ class _EmergencyActionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final fg = darkText ? AppColors.trustNavy : Colors.white;
     final sub = darkText ? AppColors.textMuted : Colors.white70;
-    return Material(color: color, borderRadius: BorderRadius.circular(24), child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(24), child: Padding(padding: const EdgeInsets.all(18), child: Row(children: [Container(width: 44, height: 44, decoration: BoxDecoration(color: darkText ? Colors.white : Colors.white.withOpacity(0.16), borderRadius: BorderRadius.circular(16)), child: Icon(icon, color: darkText ? AppColors.trustNavy : Colors.white)), const SizedBox(width: 14), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(subtitle.toUpperCase(), style: Theme.of(context).textTheme.labelSmall?.copyWith(color: sub, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text(title, style: Theme.of(context).textTheme.titleLarge?.copyWith(color: fg, fontWeight: FontWeight.w700))])), Icon(Icons.arrow_forward_ios_rounded, size: 16, color: fg)]))));
+    return Material(color: color, borderRadius: BorderRadius.circular(24), child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(24), child: Padding(padding: const EdgeInsets.all(18), child: Row(children: [Container(width: 44, height: 44, decoration: BoxDecoration(color: darkText ? Colors.white : Colors.white.withValues(alpha: 0.16), borderRadius: BorderRadius.circular(16)), child: Icon(icon, color: darkText ? AppColors.trustNavy : Colors.white)), const SizedBox(width: 14), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(subtitle.toUpperCase(), style: Theme.of(context).textTheme.labelSmall?.copyWith(color: sub, fontWeight: FontWeight.w700)), const SizedBox(height: 4), Text(title, style: Theme.of(context).textTheme.titleLarge?.copyWith(color: fg, fontWeight: FontWeight.w700))])), Icon(Icons.arrow_forward_ios_rounded, size: 16, color: fg)]))));
   }
 }
 
@@ -818,7 +818,7 @@ class _GuardianMapPainter extends CustomPainter {
   final bool darkMode;
   @override
   void paint(Canvas canvas, Size size) {
-    final gridColor = darkMode ? Colors.white.withOpacity(0.14) : Colors.white.withOpacity(greenMode ? 0.2 : 0.4);
+    final gridColor = darkMode ? Colors.white.withValues(alpha: 0.14) : Colors.white.withValues(alpha: greenMode ? 0.2 : 0.4);
     final road = Paint()..color = gridColor..style = PaintingStyle.stroke..strokeWidth = 1.4;
     for (double x = 0; x < size.width; x += 28) { canvas.drawLine(Offset(x, 0), Offset(x, size.height), road); }
     for (double y = 0; y < size.height; y += 28) { canvas.drawLine(Offset(0, y), Offset(size.width, y), road); }
@@ -839,7 +839,7 @@ class _MiniTrackingPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final bg = Paint()..color = lightMode ? const Color(0xFFBCCBB2) : const Color(0xFF2D6783);
     canvas.drawRRect(RRect.fromRectAndRadius(Offset.zero & size, const Radius.circular(24)), bg);
-    final grid = Paint()..color = Colors.white.withOpacity(lightMode ? 0.16 : 0.12)..style = PaintingStyle.stroke..strokeWidth = 1;
+    final grid = Paint()..color = Colors.white.withValues(alpha: lightMode ? 0.16 : 0.12)..style = PaintingStyle.stroke..strokeWidth = 1;
     for (double x = 0; x < size.width; x += 24) { canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid); }
     for (double y = 0; y < size.height; y += 24) { canvas.drawLine(Offset(0, y), Offset(size.width, y), grid); }
     canvas.drawCircle(Offset(size.width * 0.55, size.height * 0.48), 14, Paint()..color = const Color(0xFFEAF1FD));
@@ -878,7 +878,7 @@ class _SosHoldActivationScreenState extends State<SosHoldActivationScreen> {
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color(0xFF16283A), Color(0xFF091420)], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-              child: CustomPaint(painter: _GuardianMapPainter(darkMode: true)),
+              child: const CustomPaint(painter: _GuardianMapPainter(darkMode: true)),
             ),
           ),
           SafeArea(
@@ -894,7 +894,7 @@ class _SosHoldActivationScreenState extends State<SosHoldActivationScreen> {
                     child: Row(children: [const Icon(Icons.warning_amber_rounded, color: Colors.white), const SizedBox(width: 8), Text('Emergency Active', style: theme.textTheme.titleSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w700)), const Spacer(), const Icon(Icons.sensors_rounded, color: Colors.white, size: 18)]),
                   ),
                   const Spacer(),
-                  Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: AppColors.emergencyRed.withOpacity(0.18), borderRadius: BorderRadius.circular(999)), child: Text('Live Location Broadcasting', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.emergencyRed, fontWeight: FontWeight.w700))),
+                  Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), decoration: BoxDecoration(color: AppColors.emergencyRed.withValues(alpha: 0.18), borderRadius: BorderRadius.circular(999)), child: Text('Live Location Broadcasting', style: theme.textTheme.labelSmall?.copyWith(color: AppColors.emergencyRed, fontWeight: FontWeight.w700))),
                   const SizedBox(height: 24),
                   Material(
                     color: Colors.transparent,
@@ -1017,7 +1017,7 @@ class _SosCountdownScreenState extends State<SosCountdownScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
                       decoration: BoxDecoration(color: const Color(0xFF10182B), borderRadius: BorderRadius.circular(22)),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [const _EmergencyMeta(icon: Icons.shield_outlined, label: 'Local Authorities'), const _EmergencyMeta(icon: Icons.people_outline, label: '3 Guardians')]),
+                      child: const Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [_EmergencyMeta(icon: Icons.shield_outlined, label: 'Local Authorities'), _EmergencyMeta(icon: Icons.people_outline, label: '3 Guardians')]),
                     ),
                     const SizedBox(height: 12),
                     Row(children: [Expanded(child: FilledButton(onPressed: () { _timer?.cancel(); context.go('/emergency/priority-contact-auto-call'); }, style: FilledButton.styleFrom(backgroundColor: const Color(0xFF111A2B), foregroundColor: Colors.white), child: const Text('Contact Police'))), const SizedBox(width: 12), Expanded(child: FilledButton(onPressed: () { _timer?.cancel(); context.go('/trip-live'); }, style: FilledButton.styleFrom(backgroundColor: AppColors.emergencyRed), child: const Text('Cancel SOS')))]),
@@ -1039,6 +1039,7 @@ class _EmergencyMeta extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(children: [Icon(icon, color: Colors.white70, size: 18), const SizedBox(width: 8), Text(label, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700))]);
 }
+
 
 
 

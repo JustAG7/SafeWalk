@@ -36,88 +36,95 @@ class PermissionStepTemplate extends StatelessWidget {
           end: Alignment.bottomCenter,
           colors: [
             const Color(0xFFF8FAFF),
-            _toneBase(stepData.visualTone).withOpacity(0.08),
+            _toneBase(stepData.visualTone).withValues(alpha: 0.08),
             Colors.white,
           ],
         ),
       ),
       child: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(18, 12, 18, 24),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 430),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _PermissionTopBar(
-                    currentStep: stepData.step,
-                    totalSteps: stepData.totalSteps,
-                    onBack: onBack,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(18, 12, 18, 24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 430,
+                    minHeight: constraints.maxHeight,
                   ),
-                  const SizedBox(height: AppSpacing.lg),
-                  _PermissionHeroCard(stepData: stepData),
-                  const SizedBox(height: AppSpacing.xl),
-                  Text(
-                    stepData.title,
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      color: AppColors.trustNavy,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    stepData.description,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  ...stepData.highlights.map(
-                    (item) => Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                      child: _PermissionBenefitCard(
-                        benefit: item,
-                        accentColor: _toneBase(stepData.visualTone),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _PermissionTopBar(
+                        currentStep: stepData.step,
+                        totalSteps: stepData.totalSteps,
+                        onBack: onBack,
                       ),
-                    ),
-                  ),
-                  if (stepData.privacyFootnote != null) ...[
-                    const SizedBox(height: AppSpacing.xs),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: _SupportPill(
-                        label: stepData.privacyFootnote!,
-                        icon: Icons.verified_user_outlined,
+                      const SizedBox(height: AppSpacing.lg),
+                      _PermissionHeroCard(stepData: stepData),
+                      const SizedBox(height: AppSpacing.xl),
+                      Text(
+                        stepData.title,
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          color: AppColors.trustNavy,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                  ],
-                  const SizedBox(height: AppSpacing.lg),
-                  _InfoActionCard(
-                    title: 'Why this matters',
-                    subtitle: 'See how this permission affects your safety flow.',
-                    onTap: onLearnMorePressed,
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        stepData.description,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      ...stepData.highlights.map(
+                        (item) => Padding(
+                          padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                          child: _PermissionBenefitCard(
+                            benefit: item,
+                            accentColor: _toneBase(stepData.visualTone),
+                          ),
+                        ),
+                      ),
+                      if (stepData.privacyFootnote != null) ...[
+                        const SizedBox(height: AppSpacing.xs),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: _SupportPill(
+                            label: stepData.privacyFootnote!,
+                            icon: Icons.verified_user_outlined,
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: AppSpacing.lg),
+                      _InfoActionCard(
+                        title: 'Why this matters',
+                        subtitle: 'See how this permission affects your safety flow.',
+                        onTap: onLearnMorePressed,
+                      ),
+                      const SizedBox(height: AppSpacing.xxl),
+                      PrimaryButton(
+                        label: stepData.primaryLabel,
+                        icon: Icons.arrow_forward_rounded,
+                        onPressed: onPrimaryPressed,
+                        isLoading: isSubmitting,
+                        expanded: true,
+                        height: 54,
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      SecondaryButton(
+                        label: stepData.secondaryLabel,
+                        onPressed: isSubmitting ? null : onSecondaryPressed,
+                        expanded: true,
+                        height: 54,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: AppSpacing.xxl),
-                  PrimaryButton(
-                    label: stepData.primaryLabel,
-                    icon: Icons.arrow_forward_rounded,
-                    onPressed: onPrimaryPressed,
-                    isLoading: isSubmitting,
-                    expanded: true,
-                    height: 54,
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  SecondaryButton(
-                    label: stepData.secondaryLabel,
-                    onPressed: isSubmitting ? null : onSecondaryPressed,
-                    expanded: true,
-                    height: 54,
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
@@ -149,7 +156,7 @@ class PermissionLearnMoreSheet extends StatelessWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: _toneBase(stepData.visualTone).withOpacity(0.14),
+                    color: _toneBase(stepData.visualTone).withValues(alpha: 0.14),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: Icon(stepData.icon, color: _toneBase(stepData.visualTone)),
@@ -350,7 +357,7 @@ class _PermissionHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent = _toneBase(stepData.visualTone);
-    final surface = accent.withOpacity(0.08);
+    final surface = accent.withValues(alpha: 0.08);
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -380,7 +387,7 @@ class _PermissionHeroCard extends StatelessWidget {
                 _SupportPill(label: stepData.eyebrow, icon: Icons.lock_outline_rounded),
                 const Spacer(),
                 if (stepData.visualTone == PermissionVisualTone.background)
-                  _SupportPill(label: 'Active Guardian', icon: Icons.shield_rounded),
+                  const _SupportPill(label: 'Active Guardian', icon: Icons.shield_rounded),
               ],
             ),
           ),
@@ -419,7 +426,7 @@ class _PermissionIllustration extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
-                colors: [accent.withOpacity(0.14), accent.withOpacity(0.03)],
+                colors: [accent.withValues(alpha: 0.14), accent.withValues(alpha: 0.03)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -433,7 +440,7 @@ class _PermissionIllustration extends StatelessWidget {
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
                 BoxShadow(
-                  color: accent.withOpacity(0.18),
+                  color: accent.withValues(alpha: 0.18),
                   blurRadius: 22,
                   offset: const Offset(0, 12),
                 ),
@@ -460,7 +467,7 @@ class _PermissionIllustration extends StatelessWidget {
               ),
             ),
           if (tone == PermissionVisualTone.call)
-            Positioned(
+            const Positioned(
               bottom: 18,
               left: 82,
               child: _SupportPill(label: 'Trusted line', icon: Icons.people_alt_rounded),
@@ -497,7 +504,7 @@ class _PermissionBenefitCard extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.12),
+              color: accentColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(benefit.icon, color: accentColor, size: 20),
@@ -585,12 +592,10 @@ class _SupportPill extends StatelessWidget {
   const _SupportPill({
     required this.label,
     required this.icon,
-    this.color = AppColors.trustNavy,
   });
 
   final String label;
   final IconData icon;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -604,12 +609,12 @@ class _SupportPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: color),
+          Icon(icon, size: 14, color: AppColors.skyBlue),
           const SizedBox(width: 6),
           Text(
             label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: color,
+                  color: AppColors.skyBlue,
                   fontWeight: FontWeight.w700,
                 ),
           ),
@@ -634,7 +639,7 @@ class _PulseDot extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.4),
+            color: color.withValues(alpha: 0.4),
             blurRadius: 12,
             spreadRadius: 4,
           ),
@@ -656,3 +661,4 @@ Color _toneBase(PermissionVisualTone tone) {
       return AppColors.safeGreen;
   }
 }
+

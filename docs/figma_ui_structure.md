@@ -107,9 +107,8 @@ Note: fresh Figma MCP calls were rate-limited during scaffolding, so this docume
 ### Main App Shell
 The design strongly suggests a persistent bottom navigation shell with these core destinations:
 - Home
-- Trips
-- Contacts
 - Map
+- Trips
 - Settings
 
 ### Trip Planning Flow

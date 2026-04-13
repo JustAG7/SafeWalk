@@ -300,7 +300,7 @@ class _MapSideButton extends StatelessWidget {
           width: 42,
           height: 42,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.white.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(14),
           ),
           child: Icon(icon, color: AppColors.trustNavy),
@@ -333,7 +333,7 @@ class _MapGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.14)
+      ..color = Colors.white.withValues(alpha: 0.14)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.1;
     for (double x = -20; x < size.width + 20; x += 40) {
@@ -365,3 +365,4 @@ class _MapGridPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+

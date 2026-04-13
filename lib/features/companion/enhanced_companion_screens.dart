@@ -75,7 +75,7 @@ class _CompanionModeMainScreenState extends State<CompanionModeMainScreen> {
                   const SizedBox(height: 18),
                   Container(
                     padding: const EdgeInsets.all(22),
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30), boxShadow: [BoxShadow(color: AppColors.safeGreen.withOpacity(0.08), blurRadius: 24, offset: const Offset(0, 12))]),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30), boxShadow: [BoxShadow(color: AppColors.safeGreen.withValues(alpha: 0.08), blurRadius: 24, offset: const Offset(0, 12))]),
                     child: Column(children: [
                       Container(width: 150, height: 150, decoration: const BoxDecoration(shape: BoxShape.circle, gradient: RadialGradient(colors: [Color(0x33A6F2D2), Color(0x00FFFFFF)])), child: const Center(child: Icon(Icons.mic_none_rounded, size: 42, color: AppColors.safeGreen))),
                       const SizedBox(height: 14),
@@ -105,10 +105,10 @@ class _CompanionModeMainScreenState extends State<CompanionModeMainScreen> {
                           ),
                         ],
                       ),
-                    ]),
+                    ],),
                   ),
                   const SizedBox(height: 18),
-                  Row(children: [Expanded(child: _CompanionActionCard(title: 'Fake Call', icon: Icons.call_outlined, filled: false, onTap: '/companion/fake-call-incoming')), const SizedBox(width: 12), Expanded(child: _CompanionActionCard(title: 'Chat with Guardian', icon: Icons.chat_bubble_outline_rounded, filled: true, onTap: '/companion/chat-voice-assist'))]),
+                  const Row(children: [Expanded(child: _CompanionActionCard(title: 'Fake Call', icon: Icons.call_outlined, filled: false, onTap: '/companion/fake-call-incoming')), SizedBox(width: 12), Expanded(child: _CompanionActionCard(title: 'Chat with Guardian', icon: Icons.chat_bubble_outline_rounded, filled: true, onTap: '/companion/chat-voice-assist'))]),
                   const SizedBox(height: 16),
                   InkWell(
                     onTap: _showSessionSheet,
@@ -437,7 +437,7 @@ class FakeCallIncomingScreen extends StatelessWidget {
                     gradient: const RadialGradient(
                       colors: [Color(0x66FFFFFF), Color(0x11FFFFFF)],
                     ),
-                    border: Border.all(color: Colors.white.withOpacity(0.08)),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
                   ),
                   child: const Center(
                     child: CircleAvatar(
@@ -783,7 +783,7 @@ class _IncomingAction extends StatelessWidget {
             width: 54,
             height: 54,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.14),
+              color: Colors.white.withValues(alpha: 0.14),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: Colors.white),
@@ -859,8 +859,8 @@ class _CallControl extends StatelessWidget {
             child: Container(
               width: 56,
               height: 56,
-              decoration: BoxDecoration(
-                color: const Color(0xFFF3F6FB),
+              decoration: const BoxDecoration(
+                color: Color(0xFFF3F6FB),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: AppColors.trustNavy),
@@ -887,4 +887,5 @@ class _ChatMessage {
   final String text;
   final bool incoming;
 }
+
 

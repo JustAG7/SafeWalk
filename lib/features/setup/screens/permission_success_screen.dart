@@ -80,14 +80,19 @@ class _PermissionSuccessScreenState extends State<PermissionSuccessScreen> {
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(18, 12, 18, 24),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 430),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(18, 12, 18, 24),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: 430,
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                     Row(
                       children: [
                         IconButton(
@@ -172,10 +177,12 @@ class _PermissionSuccessScreenState extends State<PermissionSuccessScreen> {
                         child: Icon(Icons.verified_user_rounded, size: 52, color: Colors.white),
                       ),
                     ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
       ),

@@ -227,7 +227,7 @@ class AppTheme {
       elevation: 0,
       margin: EdgeInsets.zero,
       shadowColor: colorScheme.shadow,
-      surfaceTintColor: colorScheme.surfaceTint.withOpacity(0.05),
+      surfaceTintColor: colorScheme.surfaceTint.withValues(alpha: 0.05),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
         side: BorderSide(color: colorScheme.outlineVariant),
@@ -239,7 +239,7 @@ class AppTheme {
     return ChipThemeData(
       backgroundColor: colorScheme.surfaceContainerHighest,
       selectedColor: colorScheme.primaryContainer,
-      disabledColor: colorScheme.surfaceContainerHighest.withOpacity(0.7),
+      disabledColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.xs,
@@ -363,7 +363,7 @@ class AppTheme {
       modalBackgroundColor: colorScheme.surfaceContainerHighest,
       surfaceTintColor: Colors.transparent,
       showDragHandle: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppRadius.xl),
         ),
@@ -396,4 +396,5 @@ class AppTheme {
     );
   }
 }
+
 

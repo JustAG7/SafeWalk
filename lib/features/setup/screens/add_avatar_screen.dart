@@ -90,14 +90,19 @@ class _AddAvatarScreenState extends State<AddAvatarScreen> {
     return PageScaffold(
       backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 430),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 430,
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                   Row(
                     children: [
                       IconButton(
@@ -143,7 +148,7 @@ class _AddAvatarScreenState extends State<AddAvatarScreen> {
                           height: 170,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _selectedAvatar?.color.withOpacity(0.15),
+                            color: _selectedAvatar?.color.withValues(alpha: 0.15),
                             border: Border.all(
                               color: _selectedAvatar == null
                                   ? AppColors.outline
@@ -170,7 +175,7 @@ class _AddAvatarScreenState extends State<AddAvatarScreen> {
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.trustNavy.withOpacity(0.2),
+                                    color: AppColors.trustNavy.withValues(alpha: 0.2),
                                     blurRadius: 16,
                                     offset: const Offset(0, 8),
                                   ),
@@ -216,10 +221,12 @@ class _AddAvatarScreenState extends State<AddAvatarScreen> {
                     onPressed: () => context.go('/setup/contacts'),
                     child: const Text('Skip for now'),
                   ),
-                ],
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
@@ -260,7 +267,7 @@ class _AvatarActionTile extends StatelessWidget {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: option.color.withOpacity(0.14),
+                  color: option.color.withValues(alpha: 0.14),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(option.icon, color: option.color),
@@ -327,3 +334,4 @@ class _MiniProgress extends StatelessWidget {
     );
   }
 }
+

@@ -85,7 +85,7 @@ class SettingsDashboardScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _SectionCard(
+                    const _SectionCard(
                       title: 'Account',
                       items: [
                         _SettingsItem(icon: Icons.person_outline_rounded, label: 'Profile'),
@@ -94,7 +94,7 @@ class SettingsDashboardScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    _SectionCard(
+                    const _SectionCard(
                       title: 'Security',
                       items: [
                         _SettingsItem(icon: Icons.sos_outlined, label: 'SOS Triggers', route: '/settings/sos-customization'),
@@ -103,7 +103,7 @@ class SettingsDashboardScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    _SectionCard(
+                    const _SectionCard(
                       title: 'Preferences',
                       items: [
                         _SettingsItem(icon: Icons.notifications_none_rounded, label: 'Notifications', route: '/settings/notification-preferences'),

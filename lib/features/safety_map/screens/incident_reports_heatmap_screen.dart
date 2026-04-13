@@ -266,7 +266,7 @@ class _IncidentReportsHeatmapScreenState
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.08),
+                              color: Colors.white.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(18),
                             ),
                             child: Row(
@@ -477,3 +477,4 @@ class _HeatmapPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+

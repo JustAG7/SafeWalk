@@ -1,1 +1,1 @@
-export 'screens/onboarding_screen.dart';
+export 'screens/onboarding_fidelity_screen.dart';

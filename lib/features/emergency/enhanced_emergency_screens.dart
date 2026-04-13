@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_colors.dart';
@@ -180,7 +180,7 @@ class PriorityContactAutoCallScreen extends StatelessWidget {
                         _CallAction(icon: Icons.volume_up_outlined, label: 'Speaker', onTap: () => showFeedback('Speakerphone enabled.')),
                         _CallAction(icon: Icons.mic_off_outlined, label: 'Mute', onTap: () => showFeedback('Microphone muted.')),
                         _CallAction(icon: Icons.videocam_outlined, label: 'Video', onTap: () => showFeedback('Video call is not available right now.')),
-                      ]),
+                      ],),
                       const SizedBox(height: 20),
                       SizedBox(width: double.infinity, height: 52, child: OutlinedButton.icon(onPressed: () => context.go('/emergency/hotline'), icon: const Icon(Icons.local_police_outlined), label: const Text('Switch to Police Dispatch'), style: OutlinedButton.styleFrom(foregroundColor: Colors.white, side: const BorderSide(color: Colors.white24)))),
                     ],
@@ -243,7 +243,7 @@ class _NearbySafePointsScreenState extends State<NearbySafePointsScreen> {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(18),
-                        decoration: BoxDecoration(color: Colors.white.withOpacity(0.92), borderRadius: BorderRadius.circular(24)),
+                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.92), borderRadius: BorderRadius.circular(24)),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Nearby Safe Points', style: theme.textTheme.headlineSmall?.copyWith(color: AppColors.trustNavy, fontWeight: FontWeight.w700)), const SizedBox(height: 6), Text('Routes to safety', style: theme.textTheme.bodySmall?.copyWith(color: AppColors.textSecondary)), const SizedBox(height: 10), Text('Selected: $_selectedPoint', style: theme.textTheme.labelMedium?.copyWith(color: AppColors.skyBlue, fontWeight: FontWeight.w700))]),
                       ),
                       const SizedBox(height: 16),
@@ -373,7 +373,7 @@ class _CallAction extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   @override
-  Widget build(BuildContext context) => Material(color: Colors.white.withOpacity(0.08), borderRadius: BorderRadius.circular(20), child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(20), child: SizedBox(width: 76, height: 76, child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, color: Colors.white), const SizedBox(height: 8), Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700))]))));
+  Widget build(BuildContext context) => Material(color: Colors.white.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(20), child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(20), child: SizedBox(width: 76, height: 76, child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, color: Colors.white), const SizedBox(height: 8), Text(label, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: Colors.white70, fontWeight: FontWeight.w700))]))));
 }
 
 class _SafePointCard extends StatelessWidget {
@@ -400,7 +400,7 @@ class _HotlineTile extends StatelessWidget {
 class _EmergencyGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final grid = Paint()..color = Colors.white.withOpacity(0.12)..style = PaintingStyle.stroke..strokeWidth = 1;
+    final grid = Paint()..color = Colors.white.withValues(alpha: 0.12)..style = PaintingStyle.stroke..strokeWidth = 1;
     for (double x = 0; x < size.width; x += 24) { canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid); }
     for (double y = 0; y < size.height; y += 24) { canvas.drawLine(Offset(0, y), Offset(size.width, y), grid); }
     final route = Paint()..color = const Color(0x55FFFFFF)..style = PaintingStyle.stroke..strokeWidth = 2;
@@ -410,5 +410,6 @@ class _EmergencyGridPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
 
 

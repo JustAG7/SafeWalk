@@ -130,16 +130,21 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     return PageScaffold(
       backgroundColor: const Color(0xFFF7F9FC),
       body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 430),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 430,
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                     Row(
                       children: [
                         Row(
@@ -165,7 +170,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                           backgroundColor: const Color(0xFFEFF3FB),
                           child: Icon(
                             Icons.person_outline_rounded,
-                            color: AppColors.trustNavy.withOpacity(0.75),
+                            color: AppColors.trustNavy.withValues(alpha: 0.75),
                           ),
                         ),
                       ],
@@ -318,11 +323,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                         ),
                       ),
                     ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
@@ -397,3 +404,4 @@ class _ProfileField extends StatelessWidget {
     );
   }
 }
+
